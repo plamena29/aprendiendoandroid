@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Alimentación sana</string>
+    <string name="descripcionLogo">Aguacate maduro abierto por la mitad</string>
+    <string name="descTituloDesayunos">Lista de desayunos saludables</string>
+    <string name="botonIzq">Me gusta</string>
+    <string name="botonDer">No me gusta</string>
+</resources>
