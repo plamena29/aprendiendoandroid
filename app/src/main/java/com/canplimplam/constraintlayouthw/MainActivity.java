@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         milisegundos = timestampOnResume.getTime() - timestampOnPause.getTime();
         Log.d("INFO", "Milisegundos en pausa:" + String.valueOf( milisegundos));
         StringBuilder sb = new StringBuilder();
-        sb.append(milisegundos/1000).append(" segundos en Pausa");
+        sb.append(milisegundos/1000).append(" segundos en Pausa..");
         displaySegundosEnPausa.setText(sb.toString());
     }
 }
