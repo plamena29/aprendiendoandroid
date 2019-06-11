@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/idResultado"
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        android:background="#00BCD4"
+        android:text="@string/display" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="309dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/idCE"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="#CDDC39"
+                    android:minHeight="88dip"
+                    android:onClick="borrar"
+                    android:text="@string/botonCE" />
+
+                <Button
+                    android:id="@+id/idPorcentaje"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/botonPorcentaje" />
+
+                <Button
+                    android:id="@+id/idMas"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/botonMas" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/id7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton7" />
+
+                <Button
+                    android:id="@+id/id8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton8" />
+
+                <Button
+                    android:id="@+id/id7"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton9" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/id4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton4" />
+
+                <Button
+                    android:id="@+id/id5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton5" />
+
+                <Button
+                    android:id="@+id/id6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton6" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/id1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton1" />
+
+                <Button
+                    android:id="@+id/id2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton2" />
+
+                <Button
+                    android:id="@+id/id3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/boton3" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/id0"
+                    android:layout_width="208dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minWidth="176dip"
+                    android:minHeight="88dip"
+                    android:onClick="sumar10"
+                    android:text="@string/boton0" />
+
+                <Button
+                    android:id="@+id/idDecimal"
+                    android:layout_width="105dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="88dip"
+                    android:text="@string/botonDecimal" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="101dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/idMenos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="88dip"
+                android:text="@string/botonMenos" />
+
+            <Button
+                android:id="@+id/idDividir"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="88dip"
+                android:text="@string/botonDividir" />
+
+            <Button
+                android:id="@+id/idPor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="88dip"
+                android:text="@string/botonPor" />
+
+            <Button
+                android:id="@+id/idIgual"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#FF5722"
+                android:minHeight="176dip"
+                android:text="@string/botonIgual" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
