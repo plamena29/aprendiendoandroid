@@ -2,8 +2,11 @@ package com.canplimplam.listviewpersonalizado;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
+
+    private ListView listaCompra;
 
     private String[][] datos = {
             {"huevos", "proteína", "2 docenas", "LIDL", "10", "huevos camperos eco"},
@@ -31,5 +34,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        listaCompra = (ListView) findViewById(R.id.idListaCompra);
+        Adaptador adaptador = new Adaptador(this, datos, datosImg);
+        listaCompra.setAdapter(adaptador);
     }
 }
