@@ -1,1 +1,1 @@
-include ':app', ':calculadora'
+include ':app', ':calculadora', ':simplelistview', ':listviewpersonalizado'

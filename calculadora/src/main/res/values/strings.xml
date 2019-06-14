@@ -19,4 +19,6 @@
     <string name="botonPor">x</string>
     <string name="botonIgual">=</string>
     <string name="display" />
-</resources>
+
+    <string name="marca">Calculadora Plim Plam</string>
+   </resources>
