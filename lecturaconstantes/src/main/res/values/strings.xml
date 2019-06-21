@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Lectura Constantes</string>
+
+    <!-- Modelo de datos -->
+    <string name="codigo">codigo</string>
+    <string name="lablePeso">Peso:</string>
+    <string name="lableDiastolica">Diastólica:</string>
+    <string name="lableSistolica">Sistólica:</string>
+    <string name="fecha">fecha</string>
+    <string name="hora">hora</string>
+    <string name="longitud">longitud</string>
+    <string name="latitud">latitud</string>
+    <string name="Enviar">Enviar</string>
+
+    <!-- Place Holders para Formulario -->
+    <string name="diastolicaPlaceHolder">000</string>
+    <string name="systolicaPlaceHolder">000</string>
+    <string name="pesoPlaceHolder">0</string>
+
+</resources>

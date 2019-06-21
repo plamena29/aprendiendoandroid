@@ -1,6 +1,7 @@
 package com.canplimplam.listviewpersonalizado;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,19 @@ public class Adaptador extends BaseAdapter {
         calificacion.setProgress(Integer.valueOf(datos[i][4]));
 
         //Click con ficha completa
-        imagen.setTag(i);
+        imagen.setTag(datosImg[i]);
+
+        imagen.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+
+                Intent intent  = new Intent(contexto, VisorImagen.class);
+                intent.putExtra("IMG", (Integer) v.getTag());
+                contexto.startActivity(intent);
+            }
+        });
+
         return vista;
     }
     @Override

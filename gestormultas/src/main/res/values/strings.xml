@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Gestor Multas</string>
+    <string name="codigomulta">Código Multa</string>
+    <string name="agente">Agente</string>
+    <string name="motivo">Motivo</string>
+    <string name="observaciones">Observaciones</string>
+    <string name="importe">Importe</string>
+    <string name="aceptada">Aceptada</string>
+    <string name="fecha">Fecha</string>
+    <string name="hora">Hora</string>
+    <string name="tipo">Tipo</string>
+    <string name="crearmulta">Crear Multa</string>
+</resources>

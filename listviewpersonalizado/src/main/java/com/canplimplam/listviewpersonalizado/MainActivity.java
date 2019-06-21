@@ -1,7 +1,11 @@
 package com.canplimplam.listviewpersonalizado;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
@@ -36,7 +40,26 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         listaCompra = (ListView) findViewById(R.id.idListaCompra);
-        Adaptador adaptador = new Adaptador(this, datos, datosImg);
-        listaCompra.setAdapter(adaptador);
+
+        listaCompra.setAdapter(new Adaptador(this, datos, datosImg));
+
+        listaCompra.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Log.d("*****", "ENTRAMOS");
+
+                Intent visorDetalles = new Intent(view.getContext(), VisorDetalle.class);
+
+                visorDetalles.putExtra("alimento", datos[position][0]);
+                visorDetalles.putExtra("cantidad", datos[position][2]);
+                visorDetalles.putExtra("tienda", datos[position][3]);
+                visorDetalles.putExtra("detalle", datos[position][5]);
+
+                startActivity(visorDetalles);
+            }
+        });
+
     }
 }
