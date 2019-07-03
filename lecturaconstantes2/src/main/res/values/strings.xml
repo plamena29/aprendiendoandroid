@@ -1,0 +1,31 @@
+<resources>
+    <string name="app_name">Lectura Constantes 2</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="alta">Alta</string>
+    <string name="historico">Historico</string>
+    <string name="perfil">Perfil</string>
+
+    <!-- Modelo de datos -->
+    <string name="codigo">codigo</string>
+    <string name="lablePeso">Peso:</string>
+    <string name="lableDiastolica">Diastólica:</string>
+    <string name="lableSistolica">Sistólica:</string>
+    <string name="fecha">fecha</string>
+    <string name="hora">hora</string>
+    <string name="longitud">longitud</string>
+    <string name="latitud">latitud</string>
+    <string name="Enviar">Enviar</string>
+
+    <!-- Place Holders para Formulario -->
+    <string name="diastolicaPlaceHolder">000</string>
+    <string name="systolicaPlaceHolder">000</string>
+    <string name="pesoPlaceHolder">0</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="edad">Edad</string>
+    <string name="sexo">Sexo</string>
+    <string name="borrar">Borrar</string>
+
+</resources>

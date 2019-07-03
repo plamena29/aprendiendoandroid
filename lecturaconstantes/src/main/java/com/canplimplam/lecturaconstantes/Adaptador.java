@@ -1,16 +1,18 @@
 package com.canplimplam.lecturaconstantes;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.canplimplam.lecturaconstantes.model.Lectura;
-import com.canplimplam.lecturaconstantes.model.LecturaServicesImpl;
+import com.canplimplam.lecturaconstantes.model.LecturaServices;
+import com.canplimplam.lecturaconstantes.model.LecturaServicesSQLite;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -21,10 +23,29 @@ public class Adaptador extends BaseAdapter {
     private List<Lectura> lecturas;
     private Context contexto;
 
-    public Adaptador (Context contexto){
+    public Adaptador (Context contexto) {
         this.contexto = contexto;
         inflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
-        lecturas = LecturaServicesImpl.getInstance().getAll();
+
+        LecturaServices lecturaServices = new LecturaServicesSQLite(contexto);
+
+        // Aprovechando que pasamos por aquí...
+
+       /*
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy H:mm");
+        String strFecha1 = "26/06/2019 10:30";
+        String strFecha2 = "26/06/2019 12:00";
+        Date fecha1 = new Date();
+        Date fecha2 = new Date();
+        try {
+            fecha1 = sdf.parse(strFecha1);
+            fecha2 = sdf.parse(strFecha2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        lecturas = lecturaServices.getBetweenDates(fecha1, fecha2);
+*/
+       lecturas = lecturaServices.getAll();
     }
 
     @Override

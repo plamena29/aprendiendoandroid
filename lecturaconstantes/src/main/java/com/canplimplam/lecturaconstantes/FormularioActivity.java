@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.canplimplam.lecturaconstantes.model.Lectura;
 import com.canplimplam.lecturaconstantes.model.LecturaServices;
 import com.canplimplam.lecturaconstantes.model.LecturaServicesImpl;
+import com.canplimplam.lecturaconstantes.model.LecturaServicesSQLite;
 
 import java.util.Date;
 
@@ -22,7 +23,8 @@ public class FormularioActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario);
-        lecturaServices = LecturaServicesImpl.getInstance();
+        //lecturaServices = LecturaServicesImpl.getInstance();
+        lecturaServices = new LecturaServicesSQLite(this);
     }
 
     public void enviar(View view) {
@@ -86,7 +88,7 @@ public class FormularioActivity extends AppCompatActivity {
         if (!error) {
             //Vamos a instanciar una lectura
             Lectura lectura = new Lectura(new Date(), peso, diastolica, sistolica);
-
+            Log.d("******************", "lectura capturada: " + lectura.toString());
             //Vamos a persistir una lectura
             lecturaServices.create(lectura);
 

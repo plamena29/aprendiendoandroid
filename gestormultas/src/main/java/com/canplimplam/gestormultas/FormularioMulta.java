@@ -33,12 +33,31 @@ public class FormularioMulta extends AppCompatActivity {
         setContentView(R.layout.activity_formulario_multa);
         multaServices = MultaServicesImpl.getInstance();
         agenteServices = AgenteServicesImpl.getInstance();
+        //Instanciamos multa nueva
+        final Multa multa = new Multa();
+
+        //Tratamos Spinner agente
+        Spinner spinnerAgentes = (Spinner) findViewById(R.id.idAgenteFormulario);
+        Log.d("****", agenteServices.getAll().toString());
+        Log.d("****", "texto ");
+        adaptadorAgente = new AdaptadorAgente(this, agenteServices.getAll());
+        spinnerAgentes.setAdapter(adaptadorAgente);
+        spinnerAgentes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Agente clickedAgente = (Agente) parent.getItemAtPosition(position);
+                multa.setAgente(clickedAgente);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
     }
 
     public void crearmulta(View view) {
-
-        //Instanciamos multa nueva
-        final Multa multa = new Multa();
 
         //Tratamos fecha
         SimpleDateFormat sdfFechaCompleta = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -54,25 +73,6 @@ public class FormularioMulta extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
-        //Tratamos agente
-        Spinner spinnerAgentes = (Spinner) findViewById(R.id.idAgenteFormulario);
-        adaptadorAgente = new AdaptadorAgente(this, agenteServices.getAll());
-        spinnerAgentes.setAdapter(adaptadorAgente);
-        spinnerAgentes.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Agente clickedAgente = (Agente) parent.getItemAtPosition(position);
-                multa.setAgente(clickedAgente);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-       // Agente agente = agenteServices.read(100L);
-
 
         multa.setCodigo(null);
         multa.setFechaHora(fechaCompleta);
