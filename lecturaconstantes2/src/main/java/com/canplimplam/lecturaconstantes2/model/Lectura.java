@@ -1,11 +1,14 @@
 package com.canplimplam.lecturaconstantes2.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Lectura implements Serializable {
 
     private Integer codigo;
+    @SerializedName("timestamp")
     private Date fechaHora;
     private double peso;
     private double diastolica;

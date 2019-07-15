@@ -1,6 +1,7 @@
 package com.canplimplam.lecturaconstantes2;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,29 +22,10 @@ public class Adaptador extends BaseAdapter {
     private List<Lectura> lecturas;
     private Context contexto;
 
-    public Adaptador (Context contexto) {
+    public Adaptador (Context contexto, List<Lectura> lecturas) {
         this.contexto = contexto;
+        this.lecturas = lecturas;
         inflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
-
-        LecturaServices lecturaServices = new LecturaServicesSQLite(contexto);
-
-        // Aprovechando que pasamos por aquí...
-
-       /*
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy H:mm");
-        String strFecha1 = "26/06/2019 10:30";
-        String strFecha2 = "26/06/2019 12:00";
-        Date fecha1 = new Date();
-        Date fecha2 = new Date();
-        try {
-            fecha1 = sdf.parse(strFecha1);
-            fecha2 = sdf.parse(strFecha2);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        lecturas = lecturaServices.getBetweenDates(fecha1, fecha2);
-*/
-        lecturas = lecturaServices.getAll();
     }
 
     @Override
@@ -60,6 +42,8 @@ public class Adaptador extends BaseAdapter {
         TextView peso = (TextView) vista.findViewById(R.id.idPeso);
         TextView diastolica = (TextView) vista.findViewById(R.id.idDiastolica);
         TextView sistolica = (TextView) vista.findViewById(R.id.idSistolica);
+        TextView longitud = (TextView) vista.findViewById(R.id.idLongitud);
+        TextView latitud = (TextView) vista.findViewById(R.id.idLatitud);
 
         Lectura lectura = lecturas.get(i);
         fechaDia.setText(sdfDia.format(lectura.getFechaHora()));
@@ -67,18 +51,8 @@ public class Adaptador extends BaseAdapter {
         peso.setText(String.valueOf(lectura.getPeso()));
         diastolica.setText(String.valueOf(lectura.getDiastolica()));
         sistolica.setText(String.valueOf(lectura.getSistolica()));
-
-        //  LinearLayout linearLayout = new LinearLayout(contexto);
-        //  TextView tv1 = new TextView(contexto);
-        //  TextView tv2 = new TextView(contexto);
-
-        //  tv1.setText(String.valueOf(lectura.getDiastolica()));
-        //  tv2.setText(String.valueOf(lectura.getSistolica()));
-        //  linearLayout.addView(tv1);
-        //  linearLayout.addView(tv2);
-
-        //  return linearLayout;
-
+        longitud.setText(String.valueOf(lectura.getLongitud()));
+        latitud.setText(String.valueOf(lectura.getLatitud()));
         return vista;
     }
 

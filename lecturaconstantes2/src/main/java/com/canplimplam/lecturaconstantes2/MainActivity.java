@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements ComunicaMenu{
         // nos pide
         // 1. identificador del contenedor...
         // 2. el fragmento que queremos cargar... hay tres posibilidades.
-        Log.d("**********", "boton pulsado: " + botonPulsado);
         fragmentTransaction.replace(R.id.contenido, fragments[botonPulsado]);
         fragmentTransaction.commit();
     }

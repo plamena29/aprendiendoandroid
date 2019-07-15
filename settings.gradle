@@ -1,1 +1,1 @@
-include ':app', ':calculadora', ':simplelistview', ':listviewpersonalizado', ':paises', ':lecturaconstantes', ':gestormultas', ':sqlitehelloworld', ':despensainteligente', ':fragmenthelloworld', ':lecturaconstantes2'
+include ':app', ':calculadora', ':simplelistview', ':listviewpersonalizado', ':paises', ':lecturaconstantes', ':gestormultas', ':sqlitehelloworld', ':despensainteligente', ':fragmenthelloworld', ':lecturaconstantes2', ':resthelloworld', ':restpolloloco', ':gpshelloworld1', ':settinghelloworld'
