@@ -24,8 +24,8 @@ public class DespensaServicesSQLite implements DespensaServices{
     }
 
     @Override
-    public Producto readProductoDespensa(String nombreProducto) {
-        return myDB.readProductoDespensa(nombreProducto);
+    public Producto readProductoDespensa(int idProducto) {
+        return myDB.readProductoDespensa(idProducto);
     }
 
     //Hace update usando como código la clave del producto
@@ -35,8 +35,8 @@ public class DespensaServicesSQLite implements DespensaServices{
     }
 
     @Override
-    public boolean deleteProductoDespensa(String nombreProducto) {
-        return myDB.deleteProductoDespensa(nombreProducto);
+    public boolean deleteProductoDespensa(int idProducto) {
+        return myDB.deleteProductoDespensa(idProducto);
     }
 
     @Override
@@ -50,22 +50,22 @@ public class DespensaServicesSQLite implements DespensaServices{
     }
 
     @Override
-    public boolean setCantidadProductoDespensa(String nombreProducto, int cantidad) {
-        return myDB.setCantidadProductoDespensa(nombreProducto, cantidad);
+    public boolean setCantidadProductoDespensa(int idProducto, int cantidad) {
+        return myDB.setCantidadProductoDespensa(idProducto, cantidad);
     }
 
     @Override
-    public boolean aumentarCantidadProductoDespensa(String nombreProducto, int cantidad) {
-        return myDB.aumentarCantidadProductoDespensa(nombreProducto, cantidad);
+    public boolean aumentarCantidadProductoDespensa(int idProducto, int cantidad) {
+        return myDB.aumentarCantidadProductoDespensa(idProducto, cantidad);
     }
 
     @Override
-    public boolean disminuirCantidadProductoDespensa(String nombreProducto, int cantidad) {
-        return myDB.disminuirCantidadProductoDespensa(nombreProducto, cantidad);
+    public boolean disminuirCantidadProductoDespensa(int idProducto, int cantidad) {
+        return myDB.disminuirCantidadProductoDespensa(idProducto, cantidad);
     }
 
     @Override
-    public boolean setCaducidadDespensa(String nombreProducto, Date caducidad) {
-        return myDB.setCaducidadDespensa(nombreProducto, caducidad);
+    public boolean setCaducidadDespensa(int idProducto, Date caducidad) {
+        return myDB.setCaducidadDespensa(idProducto, caducidad);
     }
 }

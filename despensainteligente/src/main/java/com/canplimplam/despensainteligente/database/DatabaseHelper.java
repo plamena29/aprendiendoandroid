@@ -97,7 +97,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return resultado == -1 ? null: producto;
     }
 
-    public Producto readProductoDespensa(String nombreProducto){
+    public Producto readProductoDespensa(int idProducto){
         SQLiteDatabase db = this.getWritableDatabase();
 
         Date fecha = new Date();
@@ -112,13 +112,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(" FROM ")
                 .append(DESPENSA_TABLE)
                 .append(" WHERE ")
-                .append(COL_2 + " = " + nombreProducto);
+                .append(COL_1 + " = " + idProducto);
 
         Cursor cursor = db.rawQuery(sb.toString(), null);
         if(cursor != null && cursor.getCount() > 0){
             while (cursor.moveToNext()) {
 
-                int codigo = cursor.getInt(0);
+                String nombre = cursor.getString(1);
                 int cantidad = cursor.getInt(2);
                 String strFecha = cursor.getString(3);
                 try {
@@ -127,8 +127,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     e.printStackTrace();
                 }
 
-                producto.setCodigo(codigo);
-                producto.setNombre(nombreProducto);
+                producto.setCodigo(idProducto);
+                producto.setNombre(nombre);
                 producto.setCantidad(cantidad);
                 producto.setCaducidad(fecha);
             }
@@ -139,32 +139,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Producto updateProductoDespensa(Producto producto){
         int codigo = producto.getCodigo();
 
-        //Montamos contentValues
-        ContentValues contentValues = new ContentValues();
-        if(!producto.getNombre().equals("")){
-            contentValues.put(COL_2, producto.getNombre());
-        }
-
-        contentValues.put(COL_3, producto.getCantidad());
-
-        if(producto.getCaducidad() != null){
-            String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
-            contentValues.put(COL_4, strCaducidad);
-        }
-
-        long resultado = db.update(DESPENSA_TABLE, contentValues, COL_1 + " = " + producto.getCodigo(), null);
-
-        if(resultado == -1){
+        if(codigo == -1){
             Producto productoCreado = crearProductoDespensa(producto);
+            Log.d("**", "productoCreado: " + productoCreado.toString());
             return productoCreado;
         }
         else{
-            return producto;
+            //Montamos contentValues
+            ContentValues contentValues = new ContentValues();
+            if(!producto.getNombre().equals("")){
+                contentValues.put(COL_2, producto.getNombre());
+            }
+
+            contentValues.put(COL_3, producto.getCantidad());
+
+            if(producto.getCaducidad() != null){
+                String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
+                contentValues.put(COL_4, strCaducidad);
+            }
+
+            long resultado = db.update(DESPENSA_TABLE, contentValues, COL_1 + " = " + producto.getCodigo(), null);
+
+            Producto productoActualizado = readProductoDespensa(producto.getCodigo());
+            return productoActualizado;
         }
     }
 
-    public boolean deleteProductoDespensa(String nombreProducto){
-        long resultado = db.delete(DESPENSA_TABLE, COL_2 + " = " + nombreProducto, null);
+    public boolean deleteProductoDespensa(int idProducto){
+        long resultado = db.delete(DESPENSA_TABLE, COL_1 + " = " + idProducto, null);
         Log.d("*************", "resultado delete: " + resultado);
         return resultado <= 0 ? false: true;
     }
@@ -206,8 +208,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
       //  Cursor cursor = db.rawQuery("SELECT * FROM " + DESPENSA_TABLE + " WHERE " + COL_2 + " LIKE ", null);
 
         String[] campos = new String[]{COL_1, COL_2, COL_3, COL_4};
-        Cursor cursor = db.query(DESPENSA_TABLE, campos, "WHERE " + COL_2 + " LIKE %" + texto + "%", null,null, null, null);
+        Log.d("**", "antes de query");
 
+       // Cursor cursor = db.query(DESPENSA_TABLE, campos, "WHERE " + COL_2 + " LIKE %" + texto + "%", null,null, null, null);
+        Cursor cursor = db.query(DESPENSA_TABLE, campos, COL_2 + " LIKE ?", new String[]{"%" + texto + "%"},null, null, null);
+
+
+        Log.d("**", "cursor count" + cursor.getCount());
         List<Producto> productos = new ArrayList<Producto>();
         Map<String,Producto> despensa = new TreeMap<String,Producto>();
 
@@ -223,6 +230,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     caducidad = SDF_AMERICA.parse(strCaducidad);
                 } catch (ParseException e) {
                     e.printStackTrace();
+                    Log.d("**", "excepcion fecha");
                 }
 
                 Producto producto = new Producto(codigo, nombre, cantidad, caducidad);
@@ -238,18 +246,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return productos;
     }
 
-    public boolean setCantidadProductoDespensa(String nombreProducto, int cantidad) {
+    public boolean setCantidadProductoDespensa(int idProducto, int cantidad) {
 
-        Producto producto = readProductoDespensa(nombreProducto);
+        Producto producto = readProductoDespensa(idProducto);
         producto.setCantidad(cantidad);
         Producto productoActualizado = updateProductoDespensa(producto);
 
         return (productoActualizado == null) ? false : true;
        }
 
-    public boolean aumentarCantidadProductoDespensa(String nombreProducto, int cantidad) {
+    public boolean aumentarCantidadProductoDespensa(int idProducto, int cantidad) {
 
-        Producto producto = readProductoDespensa(nombreProducto);
+        Producto producto = readProductoDespensa(idProducto);
         int cantidadActual = producto.getCantidad();
         cantidad += cantidadActual;
         producto.setCantidad(cantidad);
@@ -258,8 +266,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (productoActualizado == null) ? false : true;
     }
 
-    public boolean disminuirCantidadProductoDespensa(String nombreProducto, int cantidad){
-        Producto producto = readProductoDespensa(nombreProducto);
+    public boolean disminuirCantidadProductoDespensa(int idProducto, int cantidad){
+        Producto producto = readProductoDespensa(idProducto);
         int cantidadActual = producto.getCantidad();
         cantidad = cantidadActual - cantidad;
         producto.setCantidad(cantidad);
@@ -268,8 +276,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (productoActualizado == null) ? false : true;
     }
 
-    public boolean setCaducidadDespensa(String nombreProducto, Date caducidad){
-        Producto producto = readProductoDespensa(nombreProducto);
+    public boolean setCaducidadDespensa(int idProducto, Date caducidad){
+        Producto producto = readProductoDespensa(idProducto);
         producto.setCaducidad(caducidad);
         Producto productoActualizado = updateProductoDespensa(producto);
 

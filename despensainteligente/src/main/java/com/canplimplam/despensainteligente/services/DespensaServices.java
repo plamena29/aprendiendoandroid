@@ -9,17 +9,17 @@ public interface DespensaServices {
 
     //CRUD
     public Producto crearProductoDespensa(Producto producto);
-    public Producto readProductoDespensa(String nombreProducto);
+    public Producto readProductoDespensa(int idProducto);
     public Producto updateProductoDespensa(Producto producto);
-    public boolean deleteProductoDespensa(String nombreProducto);
+    public boolean deleteProductoDespensa(int idProducto);
 
     //Filtros
     public List<Producto> getAllDespensa();
     public List<Producto> getByTextDespensa(String texto);
 
     //Custom
-    public boolean setCantidadProductoDespensa(String nombreProducto, int cantidad);
-    public boolean aumentarCantidadProductoDespensa(String nombreProducto, int cantidad);
-    public boolean disminuirCantidadProductoDespensa(String nombreProducto, int cantidad);
-    public boolean setCaducidadDespensa(String nombreProducto, Date caducidad);
+    public boolean setCantidadProductoDespensa(int idProducto, int cantidad);
+    public boolean aumentarCantidadProductoDespensa(int idProducto, int cantidad);
+    public boolean disminuirCantidadProductoDespensa(int idProducto, int cantidad);
+    public boolean setCaducidadDespensa(int idProducto, Date caducidad);
 }
