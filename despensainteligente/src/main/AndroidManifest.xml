@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EditarListaCompraActivity"></activity>
+        <activity android:name=".GestionarListasCompraActivity"></activity>
+        <activity android:name=".EditarListaCompraActivity" />
         <activity android:name=".ExplorarDespensaActivity" />
         <activity android:name=".FormularioProductoDespensaActivity" />
         <activity android:name=".MainActivity">
