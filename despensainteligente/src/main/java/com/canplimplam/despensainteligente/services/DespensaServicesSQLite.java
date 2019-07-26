@@ -65,7 +65,7 @@ public class DespensaServicesSQLite implements DespensaServices{
     }
 
     @Override
-    public boolean setCaducidadDespensa(int idProducto, Date caducidad) {
-        return myDB.setCaducidadDespensa(idProducto, caducidad);
+    public boolean setCaducidadProductoDespensa(int idProducto, Date caducidad) {
+        return myDB.setCaducidadProductoDespensa(idProducto, caducidad);
     }
 }

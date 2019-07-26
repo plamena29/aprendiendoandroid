@@ -13,6 +13,7 @@ public class MainActivity extends AppCompatActivity {
     Button botonCrearProductoDespensa;
     Button botonExplorarDespensa;
     Button botonListaCompra;
+    Button botonGestionarListasCompra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         botonCrearProductoDespensa = (Button) findViewById(R.id.idBotonCrearProductoDespensa);
         botonExplorarDespensa = (Button) findViewById(R.id.idBotonExplorarDespensa);
         botonListaCompra = (Button) findViewById(R.id.idBotonEditarListaCompra);
+        botonGestionarListasCompra = (Button) findViewById(R.id.idBotonGestionarListasCompra);
 
         botonCrearProductoDespensa.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(v.getContext(), EditarListaCompraActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        botonGestionarListasCompra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(v.getContext(), GestionarListasCompraActivity.class);
                 startActivity(intent);
             }
         });

@@ -21,5 +21,5 @@ public interface DespensaServices {
     public boolean setCantidadProductoDespensa(int idProducto, int cantidad);
     public boolean aumentarCantidadProductoDespensa(int idProducto, int cantidad);
     public boolean disminuirCantidadProductoDespensa(int idProducto, int cantidad);
-    public boolean setCaducidadDespensa(int idProducto, Date caducidad);
+    public boolean setCaducidadProductoDespensa(int idProducto, Date caducidad);
 }

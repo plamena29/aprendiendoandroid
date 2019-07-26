@@ -17,6 +17,11 @@ public class ListaCompra {
         this.productos = productos;
     }
 
+    public ListaCompra(int codigo, String nombre){
+        this.codigo = codigo;
+        this.nombre = nombre;
+    }
+
     public int getCodigo() {
         return codigo;
     }

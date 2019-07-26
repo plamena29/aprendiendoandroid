@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.canplimplam.despensainteligente.model.ListaCompra;
 import com.canplimplam.despensainteligente.model.Producto;
 
 import java.text.ParseException;
@@ -22,7 +23,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "despensainteligente.db";
     public static final String DESPENSA_TABLE = "DESPENSA";
-    public static final String LISTA_COMPRA_TABLE = "LISTA_COMPRA";
+    public static final String LISTA_COMPRA_MASTER_TABLE = "LISTA_COMPRA_MASTER";
+    public static final String LISTA_COMPRA_DETALLE_TABLE = "LISTA_COMPRA_DETALLE";
+    //Columnas productos
     public static final String COL_1 = "ID";
     public static final String COL_2 = "NOMBRE";
     public static final String COL_3 = "CANTIDAD";
@@ -45,8 +48,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final SimpleDateFormat SDF_AMERICA = new SimpleDateFormat("yyyy/MM/dd");
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
-        Log.d("******", "DatabaseHelper()");
+        super(context, DATABASE_NAME, null, 2);
+        Log.d("******", "DatabaseHelper() - version: 2");
     }
 
     @Override
@@ -68,7 +71,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        if(oldVersion == 1 && newVersion == 2){
+            upgradeVersionDe1a2(db);
+        }
     }
 
     //GESTOR PARA LA DESPENSA
@@ -98,7 +103,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Producto readProductoDespensa(int idProducto){
-        SQLiteDatabase db = this.getWritableDatabase();
+        //SQLiteDatabase db = this.getWritableDatabase();
 
         Date fecha = new Date();
 
@@ -276,11 +281,117 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return (productoActualizado == null) ? false : true;
     }
 
-    public boolean setCaducidadDespensa(int idProducto, Date caducidad){
+    public boolean setCaducidadProductoDespensa(int idProducto, Date caducidad){
         Producto producto = readProductoDespensa(idProducto);
         producto.setCaducidad(caducidad);
         Producto productoActualizado = updateProductoDespensa(producto);
 
         return (productoActualizado == null) ? false : true;
+    }
+
+    //GESTOR PARA EL MAESTRO DE LISTAS DE COMPRA
+
+    public ListaCompra crearListaCompra(ListaCompra listaCompra){
+        //Montamos contentValues
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_2, listaCompra.getNombre());
+
+        long resultado = db.insert(LISTA_COMPRA_MASTER_TABLE, null, contentValues);
+        listaCompra.setCodigo((int) resultado);
+
+        return resultado == -1 ? null: listaCompra;
+    }
+
+    public ListaCompra readListaCompra(int idListaCompra){
+        ListaCompra listaCompra = new ListaCompra();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT " + COL_1 + ", ")
+                .append(COL_2)
+                .append(" FROM ")
+                .append(LISTA_COMPRA_MASTER_TABLE)
+                .append(" WHERE ")
+                .append(COL_1 + " = " + idListaCompra);
+
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+        if(cursor != null && cursor.getCount() > 0){
+            while (cursor.moveToNext()) {
+
+                String nombre = cursor.getString(1);
+
+                listaCompra.setCodigo(idListaCompra);
+                listaCompra.setNombre(nombre);
+            }
+        }
+        return listaCompra;
+    }
+
+    public ListaCompra updateListaCompra(ListaCompra listaCompra){
+
+        if(listaCompra.getCodigo() == -1){
+            ListaCompra listaCompraCreada = crearListaCompra(listaCompra);
+            Log.d("**", "listaCompraCreada: " + listaCompra.toString());
+            return listaCompraCreada;
+        }
+        else{
+            //Montamos contentValues
+            ContentValues contentValues = new ContentValues();
+            if(!listaCompra.getNombre().equals("")){
+                contentValues.put(COL_2, listaCompra.getNombre());
+            }
+
+            long resultado = db.update(LISTA_COMPRA_MASTER_TABLE, contentValues, COL_1 + " = " + listaCompra.getCodigo(), null);
+
+            ListaCompra listaCompraActualizada = readListaCompra(listaCompra.getCodigo());
+            return listaCompraActualizada;
+        }
+    }
+
+    public boolean deleteListaCompra(int idListaCompra){
+        long resultado = db.delete(LISTA_COMPRA_MASTER_TABLE, COL_1 + " = " + idListaCompra, null);
+        Log.d("*************", "resultado delete: " + resultado);
+        return resultado <= 0 ? false: true;
+    }
+
+    public List<ListaCompra> getAllListasCompraMaster(){
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LISTA_COMPRA_MASTER_TABLE, null);
+
+        List<ListaCompra> listas = new ArrayList<ListaCompra>();
+        Map<String,ListaCompra> maestroListas = new TreeMap<String,ListaCompra>();
+
+        if(cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+
+                int codigo = cursor.getInt(0);
+                String nombre = cursor.getString(1);
+
+                ListaCompra listaCompra = new ListaCompra(codigo, nombre);
+                maestroListas.put(nombre, listaCompra);
+            }
+        }
+
+        Set<String> llaves = maestroListas.keySet();
+        for(String llave: llaves){
+            ListaCompra listaCompra = maestroListas.get(llave);
+            listas.add(listaCompra);
+        }
+        return listas;
+    }
+
+    //Métodos privados de upgrade
+    private void upgradeVersionDe1a2(SQLiteDatabase db){
+        Log.d("******", "upgradeVersionDe1a2()");
+        //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
+        StringBuilder sb = new StringBuilder();
+        sb.append("CREATE TABLE ")
+                .append(LISTA_COMPRA_MASTER_TABLE).append(" (")
+                .append(COL_1).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append(COL_2).append(" TEXT NOT NULL)");
+
+        Log.d("*****", sb.toString());
+
+        String strDDL = sb.toString();
+        db.execSQL(strDDL);
+        Log.d("*****", "despues de execute DDL");
     }
 }
