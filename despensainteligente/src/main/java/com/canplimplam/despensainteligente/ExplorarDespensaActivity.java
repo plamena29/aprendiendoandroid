@@ -6,12 +6,10 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.canplimplam.despensainteligente.adaptadores.DespensaListAdapter;
 import com.canplimplam.despensainteligente.model.Producto;
@@ -34,7 +32,7 @@ public class ExplorarDespensaActivity extends AppCompatActivity {
         setContentView(R.layout.activity_explorar_despensa);
 
         despensaServices = new DespensaServicesSQLite(this);
-        buscador = (EditText) findViewById(R.id.idBuscador);
+        buscador = (EditText) findViewById(R.id.idFiltroProductoDespensa);
         listaResultado = (ListView) findViewById(R.id.idListaDespensa);
 
         productosDespensa = despensaServices.getAllDespensa();

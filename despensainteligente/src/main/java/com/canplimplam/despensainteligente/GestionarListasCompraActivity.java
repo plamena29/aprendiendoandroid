@@ -27,7 +27,9 @@ public class GestionarListasCompraActivity extends AppCompatActivity {
 
     private EditText editNombreNuevaListaCompra;
     private Button botonCrearNuevaListaCompra;
+    private Button botonEliminarListaCompra;
     private Button botonEditarListaCompra;
+    private Button botonEditarProductosListaCompra;
     private ListView resultadoListasCompra;
 
     private List<ListaCompra> listasCompraMaster;
@@ -44,7 +46,9 @@ public class GestionarListasCompraActivity extends AppCompatActivity {
         editNombreNuevaListaCompra = (EditText) findViewById(R.id.idNombreNuevaListaCompra);
         botonCrearNuevaListaCompra = (Button) findViewById(R.id.idBotonCrearNuevaListaCompra);
         resultadoListasCompra = (ListView) findViewById(R.id.idListaComprasMaestro);
+        botonEliminarListaCompra = (Button) findViewById(R.id.idBotonEliminarListaCompra);
         botonEditarListaCompra = (Button) findViewById(R.id.idBotonEditarListaCompra);
+        botonEditarProductosListaCompra = (Button) findViewById(R.id.idBotonEditarProductosListaCompra);
 
         listaCompraSeleccionada = new ListaCompra();
         listaCompraSeleccionada.setCodigo(-1);
@@ -77,6 +81,16 @@ public class GestionarListasCompraActivity extends AppCompatActivity {
             }
         });
 
+        botonEliminarListaCompra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listaCompraSeleccionada.getCodigo() != -1){
+                    listaCompraServices.deleteListaCompra(listaCompraSeleccionada.getCodigo());
+                    refreshLista();
+                }
+            }
+        });
+
         botonEditarListaCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +99,15 @@ public class GestionarListasCompraActivity extends AppCompatActivity {
                     intent.putExtra("LISTA_COMPRA_ID", listaCompraSeleccionada.getCodigo());
                     startActivity(intent);
                 }
+            }
+        });
+
+        botonEditarProductosListaCompra.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GestionarListasCompraActivity.this, EditarListaCompraActivity.class);
+                intent.putExtra("LISTA_COMPRA_ID", listaCompraSeleccionada.getCodigo());
+                startActivity(intent);
             }
         });
     }

@@ -30,6 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_2 = "NOMBRE";
     public static final String COL_3 = "CANTIDAD";
     public static final String COL_4 = "CADUCIDAD";
+    public static final String COL_5 = "ID LISTA";
 
     /*
     public static final String COL_5 = "SISTOLICA";
@@ -48,8 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final SimpleDateFormat SDF_AMERICA = new SimpleDateFormat("yyyy/MM/dd");
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 2);
-        Log.d("******", "DatabaseHelper() - version: 2");
+        super(context, DATABASE_NAME, null, 3);
+        Log.d("******", "DatabaseHelper() - version: 3");
     }
 
     @Override
@@ -73,6 +74,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if(oldVersion == 1 && newVersion == 2){
             upgradeVersionDe1a2(db);
+        }
+        if(oldVersion == 2 && newVersion == 3){
+            upgradeVersionDe2a3(db);
         }
     }
 
@@ -378,6 +382,60 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return listas;
     }
 
+    //GESTOR PARA EL DETALLE DE PRODUCTOS DE LAS LISTAS DE COMPRA
+
+    public boolean crearProductoListaCompra(int codigoListaCompra, Producto producto){
+
+        //Tratamiento de fecha
+        String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
+
+        //Montamos contentValues
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_5, codigoListaCompra);
+        contentValues.put(COL_2, producto.getNombre());
+        contentValues.put(COL_3, producto.getCantidad());
+        contentValues.put(COL_4, strCaducidad);
+
+        long resultado = db.insert(LISTA_COMPRA_DETALLE_TABLE, null, contentValues);
+
+        return resultado == -1 ? false: true;
+    }
+
+    public List<Producto> getAllProductosListaCompra(int codigoListaCompra){
+
+        Date caducidad = new Date();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE " + COL_5 + " = " + codigoListaCompra, null);
+
+        List<Producto> productos = new ArrayList<Producto>();
+        Map<String,Producto> productosOrdenados = new TreeMap<String,Producto>();
+
+        if(cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+
+                String nombre = cursor.getString(2);
+                int cantidad = cursor.getInt(3);
+                String strCaducidad = cursor.getString(4);
+                try {
+                    caducidad = SDF_AMERICA.parse(strCaducidad);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Producto producto = new Producto(-1, nombre, cantidad, caducidad);
+                productosOrdenados.put(nombre, producto);
+            }
+        }
+
+        Set<String> llaves = productosOrdenados.keySet();
+        for(String llave: llaves){
+            Producto producto = productosOrdenados.get(llave);
+            productos.add(producto);
+        }
+        return productos;
+    }
+
+
     //Métodos privados de upgrade
     private void upgradeVersionDe1a2(SQLiteDatabase db){
         Log.d("******", "upgradeVersionDe1a2()");
@@ -387,6 +445,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(LISTA_COMPRA_MASTER_TABLE).append(" (")
                 .append(COL_1).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append(COL_2).append(" TEXT NOT NULL)");
+
+        Log.d("*****", sb.toString());
+
+        String strDDL = sb.toString();
+        db.execSQL(strDDL);
+        Log.d("*****", "despues de execute DDL");
+    }
+
+    private void upgradeVersionDe2a3(SQLiteDatabase db){
+        Log.d("******", "upgradeVersionDe2a3()");
+        //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
+        StringBuilder sb = new StringBuilder();
+        sb.append("CREATE TABLE ")
+                .append(LISTA_COMPRA_DETALLE_TABLE).append(" (")
+                .append(COL_1).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
+                .append(COL_5).append(" INTEGER NOT NULL,")
+                .append(COL_2).append(" TEXT NOT NULL,")
+                .append(COL_3).append(" INTEGER NOT NULL,")
+                .append(COL_4).append(" TEXT)");
 
         Log.d("*****", sb.toString());
 
