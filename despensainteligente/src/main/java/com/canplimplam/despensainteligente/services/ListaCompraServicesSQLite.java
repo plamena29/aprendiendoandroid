@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.canplimplam.despensainteligente.database.DatabaseHelper;
 import com.canplimplam.despensainteligente.model.ListaCompra;
+import com.canplimplam.despensainteligente.model.Producto;
 
 import java.util.List;
 
@@ -40,7 +41,17 @@ public class ListaCompraServicesSQLite implements ListaCompraServices{
     }
 
     @Override
+    public boolean crearProductoListaCompra(int codigoListaCompra, Producto producto) {
+        return myDB.crearProductoListaCompra(codigoListaCompra, producto);
+    }
+
+    @Override
     public List<ListaCompra> getAllListasCompraMaster(){
         return myDB.getAllListasCompraMaster();
+    }
+
+    @Override
+    public List<Producto> getAllProductosListaCompra(int codigoListaCompra) {
+        return myDB.getAllProductosListaCompra(codigoListaCompra);
     }
 }

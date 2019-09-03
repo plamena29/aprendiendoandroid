@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_2 = "NOMBRE";
     public static final String COL_3 = "CANTIDAD";
     public static final String COL_4 = "CADUCIDAD";
-    public static final String COL_5 = "ID LISTA";
+    public static final String COL_5 = "ID_LISTA";
 
     /*
     public static final String COL_5 = "SISTOLICA";

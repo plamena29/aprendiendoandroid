@@ -15,6 +15,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.canplimplam.despensainteligente.adaptadores.DespensaListAdapter;
+import com.canplimplam.despensainteligente.adaptadores.DetalleListaCompraAdapter;
 import com.canplimplam.despensainteligente.model.ListaCompra;
 import com.canplimplam.despensainteligente.model.Producto;
 import com.canplimplam.despensainteligente.services.DespensaServices;
@@ -22,20 +23,36 @@ import com.canplimplam.despensainteligente.services.DespensaServicesSQLite;
 import com.canplimplam.despensainteligente.services.ListaCompraServices;
 import com.canplimplam.despensainteligente.services.ListaCompraServicesSQLite;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 public class EditarListaCompraActivity extends AppCompatActivity {
 
-    private String strNombreListaCompra;
-    TextView nombreListaCompra;
+    private TextView nombreListaCompra;
     private ListaCompra listaCompra;
     private EditText buscador;
     private ListView listaBusquedaDespensa;
     private List<Producto> resultadoBusquedaEnDespensa;
+    private ListView listaProductosEnListaCompra;
+
     private Button botonAnadirProductoListaCompra;
 
     private DespensaServices despensaServices;
     private ListaCompraServices listaCompraServices;
+    private int codigoListaCompra;
+
+    private Date caducidad;
+    {
+        try {
+            caducidad = SDF_EUROPE.parse("31/12/9999");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static final SimpleDateFormat SDF_EUROPE = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,12 +66,14 @@ public class EditarListaCompraActivity extends AppCompatActivity {
         buscador = (EditText) findViewById(R.id.idBuscadorProductoListaCompra);
         listaBusquedaDespensa = (ListView) findViewById(R.id.idListaBusquedaDespensa);
         botonAnadirProductoListaCompra = (Button) findViewById(R.id.idBotonAnadirProductoEnLista);
+        listaProductosEnListaCompra = (ListView) findViewById(R.id.idListaProductosListaCompra);
 
         Bundle extras = getIntent().getExtras();
-        int codigoListaCompra = extras.getInt("LISTA_COMPRA_ID");
+        codigoListaCompra = extras.getInt("LISTA_COMPRA_ID");
         listaCompra = listaCompraServices.readListaCompra(codigoListaCompra);
 
         nombreListaCompra.setText(listaCompra.getNombre());
+        refreshListaProductos();
 
         buscador.addTextChangedListener(new TextWatcher() {
 
@@ -93,10 +112,15 @@ public class EditarListaCompraActivity extends AppCompatActivity {
         botonAnadirProductoListaCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Producto producto = new Producto(-1, buscador.getText().toString(), 1, caducidad);
+                listaCompraServices.crearProductoListaCompra(codigoListaCompra, producto);
             }
         });
+    }
 
-
+    private void refreshListaProductos(){
+        List<Producto> productosEnListaCompra = listaCompraServices.getAllProductosListaCompra(codigoListaCompra);
+        DetalleListaCompraAdapter adaptador = new DetalleListaCompraAdapter(EditarListaCompraActivity.this, resultadoBusquedaEnDespensa);
+        listaBusquedaDespensa.setAdapter(adaptador);
     }
 }

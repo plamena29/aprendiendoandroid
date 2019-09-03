@@ -30,7 +30,7 @@ public class ExplorarDespensaActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explorar_despensa);
-
+        Log.d("**", "ExplorarDespensa");
         despensaServices = new DespensaServicesSQLite(this);
         buscador = (EditText) findViewById(R.id.idFiltroProductoDespensa);
         listaResultado = (ListView) findViewById(R.id.idListaDespensa);
