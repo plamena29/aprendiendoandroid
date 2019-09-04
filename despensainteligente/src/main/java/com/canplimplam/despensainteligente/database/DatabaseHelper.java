@@ -50,12 +50,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 3);
-        Log.d("******", "DatabaseHelper() - version: 3");
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("******", "OnCreate()");
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
                 .append(DESPENSA_TABLE).append(" (")
@@ -63,8 +61,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_2).append(" TEXT NOT NULL,")
                 .append(COL_3).append(" INTEGER NOT NULL,")
                 .append(COL_4).append(" TEXT)");
-
-        Log.d("*****", sb.toString());
 
         String strDDL = sb.toString();
         db.execSQL(strDDL);
@@ -176,7 +172,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean deleteProductoDespensa(int idProducto){
         long resultado = db.delete(DESPENSA_TABLE, COL_1 + " = " + idProducto, null);
-        Log.d("*************", "resultado delete: " + resultado);
         return resultado <= 0 ? false: true;
     }
 
@@ -217,13 +212,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
       //  Cursor cursor = db.rawQuery("SELECT * FROM " + DESPENSA_TABLE + " WHERE " + COL_2 + " LIKE ", null);
 
         String[] campos = new String[]{COL_1, COL_2, COL_3, COL_4};
-        Log.d("**", "antes de query");
 
        // Cursor cursor = db.query(DESPENSA_TABLE, campos, "WHERE " + COL_2 + " LIKE %" + texto + "%", null,null, null, null);
         Cursor cursor = db.query(DESPENSA_TABLE, campos, COL_2 + " LIKE ?", new String[]{"%" + texto + "%"},null, null, null);
 
-
-        Log.d("**", "cursor count" + cursor.getCount());
         List<Producto> productos = new ArrayList<Producto>();
         Map<String,Producto> despensa = new TreeMap<String,Producto>();
 
@@ -239,7 +231,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     caducidad = SDF_AMERICA.parse(strCaducidad);
                 } catch (ParseException e) {
                     e.printStackTrace();
-                    Log.d("**", "excepcion fecha");
                 }
 
                 Producto producto = new Producto(codigo, nombre, cantidad, caducidad);
@@ -334,7 +325,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(listaCompra.getCodigo() == -1){
             ListaCompra listaCompraCreada = crearListaCompra(listaCompra);
-            Log.d("**", "listaCompraCreada: " + listaCompra.toString());
             return listaCompraCreada;
         }
         else{
@@ -353,7 +343,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean deleteListaCompra(int idListaCompra){
         long resultado = db.delete(LISTA_COMPRA_MASTER_TABLE, COL_1 + " = " + idListaCompra, null);
-        Log.d("*************", "resultado delete: " + resultado);
         return resultado <= 0 ? false: true;
     }
 
@@ -400,6 +389,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return resultado == -1 ? false: true;
     }
+    public boolean updateProductoListaCompra(int codigoListaCompra, Producto producto){
+        Log.d("**", "antes de cursor");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT " + COL_1 + ", " + COL_2 + " FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE (" + COL_5 + " = " + codigoListaCompra + ") AND (" + COL_2 + " = '" + producto.getNombre() + "')");
+        Log.d("**", sb.toString());
+        Cursor cursor = db.rawQuery("SELECT " + COL_1 + ", " + COL_2 + " FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE (" + COL_5 + " = " + codigoListaCompra + ") AND (" + COL_2 + " = '" + producto.getNombre() + "')", null);
+        Log.d("**", "resultados: " + cursor.getCount());
+
+        /*
+        //Tratamiento de fecha
+        String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
+
+        //Montamos contentValues
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_5, codigoListaCompra);
+        contentValues.put(COL_2, producto.getNombre());
+        contentValues.put(COL_3, producto.getCantidad());
+        contentValues.put(COL_4, strCaducidad);
+
+        long resultado = db.insert(LISTA_COMPRA_DETALLE_TABLE, null, contentValues);
+        */
+
+        long resultado = 1;
+        return resultado == -1 ? false: true;
+    }
+
 
     public List<Producto> getAllProductosListaCompra(int codigoListaCompra){
 
@@ -438,7 +454,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //Métodos privados de upgrade
     private void upgradeVersionDe1a2(SQLiteDatabase db){
-        Log.d("******", "upgradeVersionDe1a2()");
         //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
@@ -446,15 +461,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_1).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
                 .append(COL_2).append(" TEXT NOT NULL)");
 
-        Log.d("*****", sb.toString());
-
         String strDDL = sb.toString();
         db.execSQL(strDDL);
-        Log.d("*****", "despues de execute DDL");
     }
 
     private void upgradeVersionDe2a3(SQLiteDatabase db){
-        Log.d("******", "upgradeVersionDe2a3()");
         //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
@@ -465,10 +476,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 .append(COL_3).append(" INTEGER NOT NULL,")
                 .append(COL_4).append(" TEXT)");
 
-        Log.d("*****", sb.toString());
-
         String strDDL = sb.toString();
         db.execSQL(strDDL);
-        Log.d("*****", "despues de execute DDL");
     }
 }

@@ -17,7 +17,6 @@ public class ListaCompraServicesSQLite implements ListaCompraServices{
     public ListaCompraServicesSQLite(Context context){
         this.contexto = context;
         myDB = new DatabaseHelper(contexto);
-        Log.d("**", "ListacompraServicesSQLite");
     }
 
     @Override
@@ -43,6 +42,11 @@ public class ListaCompraServicesSQLite implements ListaCompraServices{
     @Override
     public boolean crearProductoListaCompra(int codigoListaCompra, Producto producto) {
         return myDB.crearProductoListaCompra(codigoListaCompra, producto);
+    }
+
+    @Override
+    public boolean updateProductoListaCompra(int codigoListaCompra, Producto producto) {
+        return myDB.updateProductoListaCompra(codigoListaCompra, producto);
     }
 
     @Override

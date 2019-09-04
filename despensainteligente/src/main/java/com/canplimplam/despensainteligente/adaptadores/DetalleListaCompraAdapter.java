@@ -1,6 +1,9 @@
 package com.canplimplam.despensainteligente.adaptadores;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,9 +24,16 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
     private Context contexto;
     private static final SimpleDateFormat SDF_EUROPE = new SimpleDateFormat("dd/MM/yyyy");
 
+    private String productoTest;
+    private int posicionItem;
+
     public DetalleListaCompraAdapter (Context contexto, List<Producto> productos) {
         this.contexto = contexto;
         inflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
+        this.productos = productos;
+    }
+
+    public void setLista(List<Producto> productos){
         this.productos = productos;
     }
 
@@ -35,12 +45,30 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
 
         TextView nombreProducto = (TextView) vista.findViewById(R.id.idNombreProductoEnListaCompra);
         EditText cantidadProducto = (EditText) vista.findViewById(R.id.idCantidadProductoEnListaCompra);
-        EditText caducidadProducto = (EditText) vista.findViewById(R.id.idCaducidadEnListaCompra);
+      //  EditText caducidadProducto = (EditText) vista.findViewById(R.id.idCaducidadEnListaCompra);
 
         Producto producto = productos.get(position);
+        productoTest = producto.getNombre();
         nombreProducto.setText(producto.getNombre());
         cantidadProducto.setText(String.valueOf(producto.getCantidad()));
-        caducidadProducto.setText(SDF_EUROPE.format(producto.getCaducidad()));
+       // caducidadProducto.setText(SDF_EUROPE.format(producto.getCaducidad()));
+
+        cantidadProducto.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                Log.d("**", "before + " + productos.get(posicionItem).getNombre());
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d("**", "on + " + productos.get(posicionItem).getNombre());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                Log.d("**", "after + " + productos.get(posicionItem).getNombre());
+            }
+        });
 
         return vista;
     }
