@@ -386,10 +386,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_4, strCaducidad);
 
         long resultado = db.insert(LISTA_COMPRA_DETALLE_TABLE, null, contentValues);
-
+Log.d("**", "producto creado: " + producto.getNombre());
         return resultado == -1 ? false: true;
     }
     public boolean updateProductoListaCompra(int codigoListaCompra, Producto producto){
+        int posicionId = -1;
+        boolean resultado = false;
         Log.d("**", "antes de cursor");
 
         StringBuilder sb = new StringBuilder();
@@ -397,23 +399,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d("**", sb.toString());
         Cursor cursor = db.rawQuery("SELECT " + COL_1 + ", " + COL_2 + " FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE (" + COL_5 + " = " + codigoListaCompra + ") AND (" + COL_2 + " = '" + producto.getNombre() + "')", null);
         Log.d("**", "resultados: " + cursor.getCount());
+        if(cursor.getCount() == 0){
+            crearProductoListaCompra(codigoListaCompra, producto);
+            resultado = true;
+        }
+        else{
+            while (cursor.moveToNext()) {
+                posicionId = cursor.getInt(0);
+            }
 
-        /*
-        //Tratamiento de fecha
-        String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
+            //Montamos contentValues
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(COL_3, producto.getCantidad());
+            if(producto.getCaducidad() != null){
+                String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
+                contentValues.put(COL_4, strCaducidad);
+            }
 
-        //Montamos contentValues
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_5, codigoListaCompra);
-        contentValues.put(COL_2, producto.getNombre());
-        contentValues.put(COL_3, producto.getCantidad());
-        contentValues.put(COL_4, strCaducidad);
+            long resultadoUpdate = db.update(LISTA_COMPRA_DETALLE_TABLE, contentValues, COL_1 + " = " + posicionId, null);
+            if (resultadoUpdate > 0){
+                resultado = true;
+            }
+        }
 
-        long resultado = db.insert(LISTA_COMPRA_DETALLE_TABLE, null, contentValues);
-        */
-
-        long resultado = 1;
-        return resultado == -1 ? false: true;
+        return resultado;
     }
 
 

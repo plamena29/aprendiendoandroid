@@ -32,26 +32,25 @@ import java.util.Set;
 import java.util.TreeMap;
 
 public class EditarListaCompraActivity extends AppCompatActivity {
-
+    //Campos refinados
+    //Campos en pantalla
     private TextView nombreListaCompra;
-    private ListaCompra listaCompra;
     private EditText buscador;
     private ListView listaBusquedaDespensa;
-    private List<Producto> resultadoBusquedaEnDespensa;
-    private ListView listaProductosEnListaCompra;
-    private List<Producto> listaTemporalProductosEnListaCompra;
-    private Map<String,Producto> mapaListaTemporalProductosEnListaCompra = new TreeMap<String,Producto>();
-
-    private int posicionItem = -1;
-    private EditText editCantidad;
-
     private Button botonAnadirProductoListaCompra;
+    private ListView listaProductosEnListaCompra;
     private Button botonGuardarDetalleListaCompra;
 
+    //Variables de instancia según modelo
+    private ListaCompra listaCompra;
+    private DetalleListaCompraAdapter adaptador;
+
+    //Services
     private DespensaServices despensaServices;
     private ListaCompraServices listaCompraServices;
-    private int codigoListaCompra;
 
+    //Variables de ayuda
+    private List<Producto> resultadoBusquedaEnDespensa;
     private Date caducidad;
     {
         try {
@@ -60,17 +59,19 @@ public class EditarListaCompraActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
-
     private static final SimpleDateFormat SDF_EUROPE = new SimpleDateFormat("dd/MM/yyyy");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_lista_compra);
 
+        //Seteamos los Services
         despensaServices = new DespensaServicesSQLite(this);
         listaCompraServices = new ListaCompraServicesSQLite(this);
 
+        //Identificamos los campos
         nombreListaCompra = (TextView) findViewById(R.id.idNombreListaCompra);
         buscador = (EditText) findViewById(R.id.idBuscadorProductoListaCompra);
         listaBusquedaDespensa = (ListView) findViewById(R.id.idListaBusquedaDespensa);
@@ -78,26 +79,29 @@ public class EditarListaCompraActivity extends AppCompatActivity {
         listaProductosEnListaCompra = (ListView) findViewById(R.id.idListaProductosListaCompra);
         botonGuardarDetalleListaCompra = (Button) findViewById(R.id.idBotonGuardarDetalleLista);
 
-
+        //Recogemos extras y seteamos Lista de Compra
         Bundle extras = getIntent().getExtras();
-        codigoListaCompra = extras.getInt("LISTA_COMPRA_ID");
+        int codigoListaCompra = extras.getInt("LISTA_COMPRA_ID");
         listaCompra = listaCompraServices.readListaCompra(codigoListaCompra);
-
         nombreListaCompra.setText(listaCompra.getNombre());
+        refreshListaProductosEnPantalla(codigoListaCompra);
 
+        //Funcionamiento del buscador en despensa
         buscador.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+
                 if(s.equals("")){
-                    resultadoBusquedaEnDespensa = despensaServices.getAllDespensa();
+                    resultadoBusquedaEnDespensa.clear();
+                    Log.d("**", "texto vacio");
                 }
                 else{
                     resultadoBusquedaEnDespensa = despensaServices.getByTextDespensa(s.toString());
                 }
 
-                DespensaListAdapter adaptador = new DespensaListAdapter(EditarListaCompraActivity.this, resultadoBusquedaEnDespensa);
-                listaBusquedaDespensa.setAdapter(adaptador);
+                DespensaListAdapter adaptadorDespensa = new DespensaListAdapter(EditarListaCompraActivity.this, resultadoBusquedaEnDespensa);
+                listaBusquedaDespensa.setAdapter(adaptadorDespensa);
             }
 
             @Override
@@ -114,61 +118,28 @@ public class EditarListaCompraActivity extends AppCompatActivity {
         listaBusquedaDespensa.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("**", "onItmeClickResultadoDespensa");
                 Producto producto = (Producto) listaBusquedaDespensa.getItemAtPosition(position);
                 buscador.setText(producto.getNombre());
             }
         });
 
+        //Añadir producto a la Lista de Compra
         botonAnadirProductoListaCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Producto nuevoProducto = new Producto(-1, buscador.getText().toString(), 1, caducidad);
-                mapaListaTemporalProductosEnListaCompra.put(nuevoProducto.getNombre(), nuevoProducto);
-                refreshListaTemporalProductosEnListaCompraDesdeMap();
-                //listaCompraServices.crearProductoListaCompra(codigoListaCompra, producto);
-                //refreshListaProductos(codigoListaCompra);
+                listaCompra.getProductos().add(nuevoProducto);
+                adaptador.ordenarLista(listaCompra.getProductos());
+                adaptador.notifyDataSetChanged();
             }
         });
 
-        refreshListaProductosEnPantalla(codigoListaCompra);
-
-        Log.d("**", "declaracion listener");
-        listaProductosEnListaCompra.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.d("**", "onItemClick");
-            /*    posicionItem = position;
-                editCantidad = (EditText) findViewById(R.id.idCantidadProductoEnListaCompra);
-                editCantidad.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                        Log.d("**", "beforeTextChanged");
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-                        Log.d("**", "onTextChanged");
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        Log.d("**", "afterTextChanged");
-                        Producto productoEditado = (Producto) listaProductosEnListaCompra.getItemAtPosition(posicionItem);
-                        productoEditado.setCantidad(Integer.parseInt(editCantidad.getText().toString()));
-                        mapaListaTemporalProductosEnListaCompra.put(productoEditado.getNombre(), productoEditado);
-                        refreshListaTemporalProductosEnListaCompraDesdeMap();
-                    }
-                }); */
-            }
-        });
-
+        //Guardar el detalle de los productos en SQLite
         botonGuardarDetalleListaCompra.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for(Producto producto: listaTemporalProductosEnListaCompra){
-                    Log.d("**", "for en listener");
-                    listaCompraServices.updateProductoListaCompra(codigoListaCompra, producto);
+                for(Producto producto: listaCompra.getProductos()){
+                    listaCompraServices.updateProductoListaCompra(listaCompra.getCodigo(), producto);
                 }
             }
         });
@@ -176,27 +147,20 @@ public class EditarListaCompraActivity extends AppCompatActivity {
     }
 
     private void refreshListaProductosEnPantalla(int codigoListaCompra){
-        listaTemporalProductosEnListaCompra = listaCompraServices.getAllProductosListaCompra(codigoListaCompra);
-        for(Producto producto : listaTemporalProductosEnListaCompra){
-            mapaListaTemporalProductosEnListaCompra.put(producto.getNombre(), producto);
-        }
-        DetalleListaCompraAdapter adaptador = new DetalleListaCompraAdapter(EditarListaCompraActivity.this, listaTemporalProductosEnListaCompra);
+        listaCompra.setProductos(listaCompraServices.getAllProductosListaCompra(codigoListaCompra));
+        adaptador = new DetalleListaCompraAdapter(EditarListaCompraActivity.this, listaCompra);
         listaProductosEnListaCompra.setAdapter(adaptador);
     }
 
+
+    /*
     private void refreshListaTemporalProductosEnListaCompraDesdeMap(){
         listaTemporalProductosEnListaCompra.clear();
-        Set<String> llaves = mapaListaTemporalProductosEnListaCompra.keySet();
-        for(String llave: llaves){
-            Log.d("**", "llave: " + llave);
 
-            Producto producto = mapaListaTemporalProductosEnListaCompra.get(llave);
-            Log.d("**", "producto: " + producto.toString());
-            listaTemporalProductosEnListaCompra.add(producto);
-        }
 
         //adaptador.setLista(listaTemporalProductosEnListaCompra);
         DetalleListaCompraAdapter adaptador = new DetalleListaCompraAdapter(EditarListaCompraActivity.this, listaTemporalProductosEnListaCompra);
         listaProductosEnListaCompra.setAdapter(adaptador);
     }
+   */
 }
