@@ -40,6 +40,11 @@ public class DespensaServicesSQLite implements DespensaServices{
     }
 
     @Override
+    public int validarProductoPorNombre(String nombreProducto) {
+        return myDB.validarProductoPorNombre(nombreProducto);
+    }
+
+    @Override
     public List<Producto> getAllDespensa() {
         return myDB.getAllDespensa();
     }
@@ -47,6 +52,11 @@ public class DespensaServicesSQLite implements DespensaServices{
     @Override
     public List<Producto> getByTextDespensa(String texto) {
         return myDB.getByTextDespensa(texto);
+    }
+
+    @Override
+    public boolean actualizarDesdeListaCompra(List<Producto> productos) {
+        return myDB.actualizarDesdeListaCompra(productos);
     }
 
     @Override

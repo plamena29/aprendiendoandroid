@@ -15,7 +15,7 @@ public interface ListaCompraServices {
 
     //CRUD gestión detalle de lista de compra - productos
     public boolean crearProductoListaCompra(int codigoListaCompra, Producto producto);
-    public boolean updateProductoListaCompra(int codigoListaCompra, Producto producto);
+    public boolean updateProductosListaCompra(ListaCompra listaCompra);
 
     //Filtros
     public List<ListaCompra> getAllListasCompraMaster();

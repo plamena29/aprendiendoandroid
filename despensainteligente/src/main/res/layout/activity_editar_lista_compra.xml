@@ -128,15 +128,16 @@
 
     <Button
         android:id="@+id/idBotonGuardarDetalleLista"
-        android:layout_width="85dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Guardar"
+        android:layout_marginEnd="64dp"
+        android:layout_marginRight="64dp"
+        android:text="guardar lista"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline33" />
+        app:layout_constraintTop_toTopOf="@+id/guideline33"
+        app:layout_constraintVertical_bias="0.666" />
 
     <Button
         android:id="@+id/idBotonActualizarDespensaDesdeListaCompra"
@@ -146,7 +147,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="Despensa"
+        android:text="enviar a Despensa"
         android:textSize="10sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/idBotonGuardarDetalleLista"

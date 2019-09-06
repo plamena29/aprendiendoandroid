@@ -143,13 +143,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Producto updateProductoDespensa(Producto producto){
         int codigo = producto.getCodigo();
-
-        if(codigo == -1){
+        int nombreExistente = validarProductoPorNombre(producto.getNombre());
+Log.d("**", "codigo: " + codigo);
+        Log.d("**", "nombreExistente: " + nombreExistente);
+        //El producto no existe y hay que crearlo:
+        //1 - se crea nuevo en despensa
+        //2 - viene desde ListaCompra y el nombre no se ha usado
+        if((codigo == -1) && (nombreExistente == -1)){
             Producto productoCreado = crearProductoDespensa(producto);
             Log.d("**", "productoCreado: " + productoCreado.toString());
             return productoCreado;
         }
-        else{
+        //Se conoce el código del producto, es una actualizacion desde despensa
+        //También hay que actualizar el nombre siempre y cuando esté disponible
+        else if((codigo != -1) && (((nombreExistente == -1)) || (nombreExistente == codigo))){
             //Montamos contentValues
             ContentValues contentValues = new ContentValues();
             if(!producto.getNombre().equals("")){
@@ -167,12 +174,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
             Producto productoActualizado = readProductoDespensa(producto.getCodigo());
             return productoActualizado;
+        }else{
+            return producto;
         }
     }
 
     public boolean deleteProductoDespensa(int idProducto){
         long resultado = db.delete(DESPENSA_TABLE, COL_1 + " = " + idProducto, null);
         return resultado <= 0 ? false: true;
+    }
+
+    public int validarProductoPorNombre(String nombreProducto){
+        int resultado = -1;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("SELECT " + COL_1 + ", " + COL_2)
+                .append(" FROM ")
+                .append(DESPENSA_TABLE)
+                .append(" WHERE ")
+                .append(COL_2 + " = '" + nombreProducto + "'");
+
+        Cursor cursor = db.rawQuery(sb.toString(), null);
+        if(cursor != null && cursor.getCount() > 0) {
+            while (cursor.moveToNext()) {
+                resultado = cursor.getInt(0);
+            }
+        }
+        return resultado;
     }
 
     public List<Producto> getAllDespensa(){
@@ -244,6 +272,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             productos.add(p);
         }
         return productos;
+    }
+
+    public boolean actualizarDesdeListaCompra(List<Producto> productos){
+        boolean resultado = true;
+        //TODO pulir el resultado
+        for(Producto producto: productos){
+            int codigoProducto = validarProductoPorNombre(producto.getNombre());
+            if(codigoProducto == -1){
+                crearProductoDespensa(producto);
+                Log.d("**", "producto creao");
+            }
+            else{
+                int cantidad = readProductoDespensa(codigoProducto).getCantidad();
+                cantidad += producto.getCantidad();
+                producto.setCantidad(cantidad);
+                updateProductoDespensa(producto);
+                Log.d("**", "producto actualizado");
+            }
+        }
+        return resultado;
     }
 
     public boolean setCantidadProductoDespensa(int idProducto, int cantidad) {
@@ -386,39 +434,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_4, strCaducidad);
 
         long resultado = db.insert(LISTA_COMPRA_DETALLE_TABLE, null, contentValues);
-Log.d("**", "producto creado: " + producto.getNombre());
+
         return resultado == -1 ? false: true;
     }
-    public boolean updateProductoListaCompra(int codigoListaCompra, Producto producto){
-        int posicionId = -1;
-        boolean resultado = false;
-        Log.d("**", "antes de cursor");
 
-        StringBuilder sb = new StringBuilder();
-        sb.append("SELECT " + COL_1 + ", " + COL_2 + " FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE (" + COL_5 + " = " + codigoListaCompra + ") AND (" + COL_2 + " = '" + producto.getNombre() + "')");
-        Log.d("**", sb.toString());
-        Cursor cursor = db.rawQuery("SELECT " + COL_1 + ", " + COL_2 + " FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE (" + COL_5 + " = " + codigoListaCompra + ") AND (" + COL_2 + " = '" + producto.getNombre() + "')", null);
-        Log.d("**", "resultados: " + cursor.getCount());
-        if(cursor.getCount() == 0){
-            crearProductoListaCompra(codigoListaCompra, producto);
-            resultado = true;
-        }
-        else{
-            while (cursor.moveToNext()) {
-                posicionId = cursor.getInt(0);
-            }
+    public boolean updateProductosListaCompra(ListaCompra listaCompra){
+        boolean resultadoCrear = false;
+        boolean resultado = true;
 
-            //Montamos contentValues
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(COL_3, producto.getCantidad());
-            if(producto.getCaducidad() != null){
-                String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
-                contentValues.put(COL_4, strCaducidad);
-            }
+        //Limpiamos los registros existentes en la base de datos
+        db.delete(LISTA_COMPRA_DETALLE_TABLE, COL_5 + " = " + listaCompra.getCodigo(), null);
 
-            long resultadoUpdate = db.update(LISTA_COMPRA_DETALLE_TABLE, contentValues, COL_1 + " = " + posicionId, null);
-            if (resultadoUpdate > 0){
-                resultado = true;
+        //Creamos cada uno de los productos nuevos
+        for(Producto producto: listaCompra.getProductos()){
+            resultadoCrear = crearProductoListaCompra(listaCompra.getCodigo(), producto);
+            if(resultadoCrear == false){
+                resultado = false;
             }
         }
 

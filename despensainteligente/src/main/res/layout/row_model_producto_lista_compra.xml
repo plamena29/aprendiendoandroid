@@ -46,7 +46,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginBottom="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
@@ -61,7 +60,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="number"
         android:textSize="14sp"
@@ -78,7 +76,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="date"
         android:textSize="14sp"
@@ -86,5 +83,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline30"
         app:layout_constraintTop_toTopOf="@+id/guideline31" />
+
+    <ImageView
+        android:id="@+id/idImageBorrarProductoListaCompra"
+        android:layout_width="15dp"
+        android:layout_height="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline32"
+        app:layout_constraintEnd_toStartOf="@+id/guideline28"
+        app:layout_constraintTop_toTopOf="@+id/guideline31"
+        tools:srcCompat="@tools:sample/avatars[3]" />
 
 </android.support.constraint.ConstraintLayout>

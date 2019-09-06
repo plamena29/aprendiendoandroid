@@ -12,12 +12,14 @@ public interface DespensaServices {
     public Producto readProductoDespensa(int idProducto);
     public Producto updateProductoDespensa(Producto producto);
     public boolean deleteProductoDespensa(int idProducto);
+    public int validarProductoPorNombre(String nombreProducto);
 
     //Filtros
     public List<Producto> getAllDespensa();
     public List<Producto> getByTextDespensa(String texto);
 
     //Custom
+    public boolean actualizarDesdeListaCompra(List<Producto> productos);
     public boolean setCantidadProductoDespensa(int idProducto, int cantidad);
     public boolean aumentarCantidadProductoDespensa(int idProducto, int cantidad);
     public boolean disminuirCantidadProductoDespensa(int idProducto, int cantidad);

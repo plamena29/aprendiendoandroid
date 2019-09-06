@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,8 +17,10 @@ import com.canplimplam.despensainteligente.R;
 import com.canplimplam.despensainteligente.model.ListaCompra;
 import com.canplimplam.despensainteligente.model.Producto;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -52,24 +55,41 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
         listaCompra.setProductos(listaOrdenada);
     }
 
+    public List<Producto> getProductos(){
+        return listaCompra.getProductos();
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final View vista = inflater.inflate(R.layout.row_model_producto_lista_compra, null);
 
         //Recoger todas las vistas de ese layout..
+        final ImageView imageBorrarProducto = (ImageView) vista.findViewById(R.id.idImageBorrarProductoListaCompra);
         final TextView nombreProducto = (TextView) vista.findViewById(R.id.idNombreProductoEnListaCompra);
         final EditText cantidadProducto = (EditText) vista.findViewById(R.id.idCantidadProductoEnListaCompra);
-        EditText caducidadProducto = (EditText) vista.findViewById(R.id.idCaducidadEnListaCompra);
+        final EditText caducidadProducto = (EditText) vista.findViewById(R.id.idCaducidadEnListaCompra);
 
         Producto producto = listaCompra.getProductos().get(position);
+        imageBorrarProducto.setImageResource(R.drawable.botoneliminar);
         nombreProducto.setText(producto.getNombre());
         cantidadProducto.setText(String.valueOf(producto.getCantidad()));
         caducidadProducto.setText(SDF_EUROPE.format(producto.getCaducidad()));
 
+        imageBorrarProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("**", "borrar: " + listaCompra.getProductos().get(position).getNombre());
+                listaCompra.getProductos().remove(position);
+                notifyDataSetChanged();
+            }
+        });
+
         cantidadProducto.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                listaCompra.getProductos().get(position).setCantidad(Integer.parseInt(cantidadProducto.getText().toString()));
+                if(!cantidadProducto.getText().toString().equals("")){
+                    listaCompra.getProductos().get(position).setCantidad(Integer.parseInt(cantidadProducto.getText().toString()));
+                }
             }
 
             @Override
@@ -82,6 +102,34 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
 
             }
         });
+
+        caducidadProducto.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void afterTextChanged(Editable s) {
+                boolean resultado = validarFecha(caducidadProducto.getText().toString());
+                if(resultado == true){
+                    Date fecha = new Date();
+                    try {
+                        fecha = SDF_EUROPE.parse(caducidadProducto.getText().toString());
+                    } catch (ParseException e) {
+                        //Toast
+                    }
+                    listaCompra.getProductos().get(position).setCaducidad(fecha);
+                }
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+        });
+
         cantidadProducto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -111,5 +159,15 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
     @Override
     public long getItemId(int position) {
         return 0;
+    }
+
+    private boolean validarFecha(String strFecha){
+        try {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            formatoFecha.parse(strFecha);
+        } catch (ParseException e) {
+            return false;
+        }
+        return true;
     }
 }

@@ -45,8 +45,8 @@ public class ListaCompraServicesSQLite implements ListaCompraServices{
     }
 
     @Override
-    public boolean updateProductoListaCompra(int codigoListaCompra, Producto producto) {
-        return myDB.updateProductoListaCompra(codigoListaCompra, producto);
+    public boolean updateProductosListaCompra(ListaCompra listaCompra) {
+        return myDB.updateProductosListaCompra(listaCompra);
     }
 
     @Override
