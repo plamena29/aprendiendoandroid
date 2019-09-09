@@ -78,6 +78,8 @@
         android:layout_marginRight="8dp"
         android:ems="10"
         android:inputType="date"
+        android:focusable="false"
+        android:clickable="true"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toEndOf="parent"

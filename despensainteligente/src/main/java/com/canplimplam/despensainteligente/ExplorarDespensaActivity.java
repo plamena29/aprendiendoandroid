@@ -39,6 +39,10 @@ public class ExplorarDespensaActivity extends AppCompatActivity {
         DespensaListAdapter adaptador = new DespensaListAdapter(ExplorarDespensaActivity.this, productosDespensa);
         listaResultado.setAdapter(adaptador);
 
+        for(Producto producto: productosDespensa){
+            Log.d("**", "codigo: " + producto.getCodigo() + " - nombre: " + producto.getNombre());
+        }
+
         buscador.addTextChangedListener(new TextWatcher() {
 
             @Override

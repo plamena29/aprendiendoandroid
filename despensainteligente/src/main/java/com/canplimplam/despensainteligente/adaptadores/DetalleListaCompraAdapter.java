@@ -1,6 +1,8 @@
 package com.canplimplam.despensainteligente.adaptadores;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -103,6 +106,18 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
             }
         });
 
+        caducidadProducto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch(v.getId()){
+                    case R.id.idCaducidadEnListaCompra:
+                        showDatePickerDialog(v, position);
+                        break;
+
+                }
+            }
+        });
+        /*
         caducidadProducto.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
@@ -130,6 +145,9 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
 
         });
 
+*/
+
+        /*
         cantidadProducto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -142,6 +160,8 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
                 }
             }
         });
+
+        */
 
         return vista;
     }
@@ -169,5 +189,44 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
             return false;
         }
         return true;
+    }
+
+    private void showDatePickerDialog(final View v, final int position) {
+        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                // +1 in month because January is zero
+                String strMonth;
+                month += 1;
+                if(month < 10){
+                    strMonth = "0" + month;
+                }else{
+                    strMonth = "" + month;
+                }
+                String strDay;
+                if(day < 10){
+                    strDay = "0" + day;
+                }else{
+                    strDay = "" + day;
+                }
+
+                final String selectedDate = strDay + "/" + strMonth + "/" + year;
+
+                //Editamos el valor en el campo de la listView
+                EditText caducidad = (EditText) v.findViewById(R.id.idCaducidadEnListaCompra);
+                caducidad.setText(selectedDate);
+
+                //Actualizamos la fecha de caducidad en la lista del adaptador
+                Date fecha = new Date();
+                try {
+                    fecha = SDF_EUROPE.parse(selectedDate);
+                } catch (ParseException e) {
+                    //Toast
+                }
+                listaCompra.getProductos().get(position).setCaducidad(fecha);
+            }
+        });
+
+        newFragment.show(((FragmentActivity)contexto).getSupportFragmentManager(), "datePicker");
     }
 }

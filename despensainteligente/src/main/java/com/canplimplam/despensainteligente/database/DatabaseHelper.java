@@ -144,8 +144,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Producto updateProductoDespensa(Producto producto){
         int codigo = producto.getCodigo();
         int nombreExistente = validarProductoPorNombre(producto.getNombre());
-Log.d("**", "codigo: " + codigo);
-        Log.d("**", "nombreExistente: " + nombreExistente);
+
         //El producto no existe y hay que crearlo:
         //1 - se crea nuevo en despensa
         //2 - viene desde ListaCompra y el nombre no se ha usado
@@ -155,6 +154,7 @@ Log.d("**", "codigo: " + codigo);
             return productoCreado;
         }
         //Se conoce el código del producto, es una actualizacion desde despensa
+        //O desde lista de compra cuando el producto ya existe
         //También hay que actualizar el nombre siempre y cuando esté disponible
         else if((codigo != -1) && (((nombreExistente == -1)) || (nombreExistente == codigo))){
             //Montamos contentValues
@@ -274,21 +274,18 @@ Log.d("**", "codigo: " + codigo);
         return productos;
     }
 
-    public boolean actualizarDesdeListaCompra(List<Producto> productos){
+    public boolean actualizarDespensaDesdeListaCompra(List<Producto> productos){
         boolean resultado = true;
         //TODO pulir el resultado
         for(Producto producto: productos){
-            int codigoProducto = validarProductoPorNombre(producto.getNombre());
-            if(codigoProducto == -1){
+            if(producto.getCodigo() == -1){
                 crearProductoDespensa(producto);
-                Log.d("**", "producto creao");
             }
             else{
-                int cantidad = readProductoDespensa(codigoProducto).getCantidad();
+                int cantidad = readProductoDespensa(producto.getCodigo()).getCantidad();
                 cantidad += producto.getCantidad();
                 producto.setCantidad(cantidad);
                 updateProductoDespensa(producto);
-                Log.d("**", "producto actualizado");
             }
         }
         return resultado;

@@ -140,10 +140,20 @@ public class EditarListaCompraActivity extends AppCompatActivity {
         botonActualizarDespensa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("**", "Actualizamos despensa");
-                listaCompra.setProductos(adaptador.getProductos());
+                //Recogemos los códigos de los productos existentes desde la despensa parahacer el matching correcto
+                List<Producto> productosConCodigoActualizado = adaptador.getProductos();
+                for(Producto producto: productosConCodigoActualizado){
+                    int codigoExistente = despensaServices.validarProductoPorNombre(producto.getNombre());
+                    producto.setCodigo(codigoExistente);
+                    Log.d("**", "código: " + producto.getCodigo() + " - producto: " + producto.getNombre());
+                }
+
+                //Actualizamos la lista de compra en memoria y en base de datos
+                listaCompra.setProductos(productosConCodigoActualizado);
                 listaCompraServices.updateProductosListaCompra(listaCompra);
-                despensaServices.actualizarDesdeListaCompra(adaptador.getProductos());
+
+                //Actualizamos la despensa desde la lista de compra ajustando las cantidades
+                despensaServices.actualizarDespensaDesdeListaCompra(listaCompra.getProductos());
             }
         });
 
@@ -153,7 +163,6 @@ public class EditarListaCompraActivity extends AppCompatActivity {
             public void onClick(View v) {
                 listaCompra.setProductos(adaptador.getProductos());
                 listaCompraServices.updateProductosListaCompra(listaCompra);
-                despensaServices.actualizarDesdeListaCompra(adaptador.getProductos());
             }
         });
 

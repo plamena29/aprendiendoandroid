@@ -55,8 +55,8 @@ public class DespensaServicesSQLite implements DespensaServices{
     }
 
     @Override
-    public boolean actualizarDesdeListaCompra(List<Producto> productos) {
-        return myDB.actualizarDesdeListaCompra(productos);
+    public boolean actualizarDespensaDesdeListaCompra(List<Producto> productos) {
+        return myDB.actualizarDespensaDesdeListaCompra(productos);
     }
 
     @Override

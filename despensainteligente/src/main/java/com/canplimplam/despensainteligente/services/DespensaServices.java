@@ -19,7 +19,7 @@ public interface DespensaServices {
     public List<Producto> getByTextDespensa(String texto);
 
     //Custom
-    public boolean actualizarDesdeListaCompra(List<Producto> productos);
+    public boolean actualizarDespensaDesdeListaCompra(List<Producto> productos);
     public boolean setCantidadProductoDespensa(int idProducto, int cantidad);
     public boolean aumentarCantidadProductoDespensa(int idProducto, int cantidad);
     public boolean disminuirCantidadProductoDespensa(int idProducto, int cantidad);
