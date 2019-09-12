@@ -16,19 +16,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d("**", "main activity");
 
         /*
         MiBoton mb = new MiBoton(this);
         mb.setText("hola");
         */
 
+        Log.d("**", "contexto desde mian activity: " + this.getApplicationContext());
         MyValueSelector mvs = new MyValueSelector(this);
+        MyValueSelector mvs2 = new MyValueSelector(this);
 
-
+        View v = mvs.getView();
+        View v2 = mvs2.getView();
        // mvs.setValor(4);
-        setContentView(mvs);
-     //   mvs.valorView.setText("hola");
+
+      setContentView(v);
+        setContentView(v);
 
         Log.d("**", "despues de set text");
        // myValueSelector = new MyValueSelector(this);

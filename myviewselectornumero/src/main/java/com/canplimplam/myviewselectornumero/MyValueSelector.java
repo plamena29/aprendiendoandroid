@@ -2,58 +2,60 @@ package com.canplimplam.myviewselectornumero;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 public class MyValueSelector extends ConstraintLayout {
 
-
     private ImageView botonMenos;
-    TextView valorView;
+    private TextView valorView;
     private int valor;
     private ImageView botonMas;
 
-    private Context contexto;
     private View view;
 
     public MyValueSelector(Context context) {
        super(context);
-        Log.d("**", "constructior");
-        this.contexto = context;
-        LayoutInflater inflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
-        inflater.inflate(R.layout.my_value_selector, null, true);
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+        view = inflater.inflate(R.layout.my_value_selector, null);
 
+        botonMenos = (ImageView) view.findViewById(R.id.idBotonMenos);
+        valorView = (TextView) view.findViewById(R.id.idValor);
+        botonMas = (ImageView) view.findViewById(R.id.idBotonMas);
 
-       botonMenos = (ImageView) findViewById(R.id.idBotonMenos);
-        Log.d("**", "" + R.id.idBotonMenos);
-      //  botonMas = (ImageView) view.findViewById(R.id.idBotonMas);
-       valorView = (TextView) findViewById(R.id.idValor);
+        valorView.setText("2");
+        valor = 2;
+        botonMenos.setImageResource(R.drawable.botonmenos);
+        botonMas.setImageResource(R.drawable.botonmas);
 
-        Log.d("**", "" + R.id.idValor);
-        valorView.setText("hola");
-       //botonMenos.setImageResource(R.drawable.botonmenos);
-      //  botonMas.setImageResource(R.drawable.botonmas);
+        botonMas.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                valor++;
+                valorView.setText("" + valor);
+            }
+        });
 
+        botonMenos.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(valor>0){
+                    valor --;
+                    valorView.setText("" + valor);
+                }
+            }
+        });
+    }
+
+    public View getView(){
+        return view;
     }
 
     public void setValor(int valor){
         this.valor = valor;
-        Log.d("**", "set valor 1");
-       // valorView.setText("hola");
-        Log.d("**", "set valor 2");
+        valorView.setText(valor);
     }
 
-    /*
-    public View getView(){
-
-
-
-        Log.d("**", "get view");
-        return view;
-    }
-    */
 }
