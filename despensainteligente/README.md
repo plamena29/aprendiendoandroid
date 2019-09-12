@@ -1,0 +1,1 @@
+App para gestionar la despensa y las listas de compra
