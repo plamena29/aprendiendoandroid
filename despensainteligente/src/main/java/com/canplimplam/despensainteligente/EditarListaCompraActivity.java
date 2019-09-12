@@ -154,6 +154,14 @@ public class EditarListaCompraActivity extends AppCompatActivity {
 
                 //Actualizamos la despensa desde la lista de compra ajustando las cantidades
                 despensaServices.actualizarDespensaDesdeListaCompra(listaCompra.getProductos());
+
+                //Seteamos a cero las cantidades en la lista de compra
+                for(Producto producto: adaptador.getProductos()){
+                    producto.setCantidad(0);
+                }
+                listaCompra.setProductos(adaptador.getProductos());
+                listaCompraServices.updateProductosListaCompra(listaCompra);
+                adaptador.notifyDataSetChanged();
             }
         });
 

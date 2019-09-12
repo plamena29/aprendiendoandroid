@@ -18,8 +18,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d("**", "main activity");
 
+        /*
         MiBoton mb = new MiBoton(this);
         mb.setText("hola");
+        */
 
         MyValueSelector mvs = new MyValueSelector(this);
 

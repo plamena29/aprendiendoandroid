@@ -387,7 +387,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public boolean deleteListaCompra(int idListaCompra){
-        long resultado = db.delete(LISTA_COMPRA_MASTER_TABLE, COL_1 + " = " + idListaCompra, null);
+        long resultado = db.delete(LISTA_COMPRA_DETALLE_TABLE, COL_5 + " = " + idListaCompra, null);
+        if(resultado >= 0){
+            resultado = db.delete(LISTA_COMPRA_MASTER_TABLE, COL_1 + " = " + idListaCompra, null);
+        }
         return resultado <= 0 ? false: true;
     }
 

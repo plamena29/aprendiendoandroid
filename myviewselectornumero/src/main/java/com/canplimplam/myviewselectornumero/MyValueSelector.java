@@ -32,9 +32,10 @@ public class MyValueSelector extends ConstraintLayout {
         Log.d("**", "" + R.id.idBotonMenos);
       //  botonMas = (ImageView) view.findViewById(R.id.idBotonMas);
        valorView = (TextView) findViewById(R.id.idValor);
+
         Log.d("**", "" + R.id.idValor);
-       // valorView.setText("hola");
-     // botonMenos.setImageResource(R.drawable.botonmenos);
+        valorView.setText("hola");
+       //botonMenos.setImageResource(R.drawable.botonmenos);
       //  botonMas.setImageResource(R.drawable.botonmas);
 
     }
