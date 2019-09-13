@@ -19,7 +19,8 @@ public class MyValueSelector extends ConstraintLayout {
     public MyValueSelector(Context context) {
        super(context);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-        view = inflater.inflate(R.layout.my_value_selector, null);
+       // view = inflater.inflate(R.layout.my_value_selector, null);
+        view = inflater.inflate(R.layout.my_value_selector, this, true);
 
         botonMenos = (ImageView) view.findViewById(R.id.idBotonMenos);
         valorView = (TextView) view.findViewById(R.id.idValor);
@@ -51,6 +52,10 @@ public class MyValueSelector extends ConstraintLayout {
 
     public View getView(){
         return view;
+    }
+
+    public void setView(View v){
+        view = v;
     }
 
     public void setValor(int valor){

@@ -37,10 +37,34 @@
         android:orientation="horizontal"
         app:layout_constraintGuide_begin="110dp" />
 
-    <com.canplimplam.myviewselectornumero.MyValueSelector
-        android:id="@+id/view"
-        android:layout_width="279dp"
-        android:layout_height="438dp"
+    <FrameLayout
+        android:id="@+id/idFrameLayout"
+        android:layout_width="228dp"
+        android:layout_height="108dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline5">
+
+    </FrameLayout>
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="282dp" />
+
+    <FrameLayout
+        android:id="@+id/idFrameLayout2"
+        android:layout_width="177dp"
+        android:layout_height="73dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -50,5 +74,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline5" />
+        app:layout_constraintTop_toTopOf="@+id/guideline7">
+
+    </FrameLayout>
+
 </android.support.constraint.ConstraintLayout>
