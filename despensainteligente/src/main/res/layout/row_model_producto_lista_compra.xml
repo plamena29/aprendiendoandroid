@@ -17,28 +17,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="234dp" />
+        app:layout_constraintGuide_begin="191dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline30"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_begin="301dp" />
-
-    <android.support.constraint.Guideline
-        android:id="@+id/guideline31"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_begin="6dp" />
+        app:layout_constraintGuide_begin="313dp" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="54dp" />
+        app:layout_constraintGuide_begin="43dp" />
 
     <TextView
         android:id="@+id/idNombreProductoEnListaCompra"
@@ -46,53 +39,57 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:text="TextView"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintStart_toStartOf="@+id/guideline28"
-        app:layout_constraintTop_toTopOf="@+id/guideline31" />
+        app:layout_constraintTop_toTopOf="@+id/guideline13" />
 
-
-    <EditText
-        android:id="@+id/idCantidadProductoEnListaCompra"
-        android:layout_width="48dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toTopOf="@+id/guideline32"
-        app:layout_constraintEnd_toStartOf="@+id/guideline30"
-        app:layout_constraintStart_toStartOf="@+id/guideline29"
-        app:layout_constraintTop_toTopOf="@+id/guideline31" />
 
     <EditText
         android:id="@+id/idCaducidadEnListaCompra"
-        android:layout_width="91dp"
-        android:layout_height="0dp"
+        android:layout_width="82dp"
+        android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:ems="10"
-        android:inputType="date"
-        android:focusable="false"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:clickable="true"
+        android:ems="10"
+        android:focusable="false"
+        android:inputType="date"
         android:textSize="14sp"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline30"
-        app:layout_constraintTop_toTopOf="@+id/guideline31" />
+        app:layout_constraintTop_toTopOf="@+id/guideline13" />
 
     <ImageView
         android:id="@+id/idImageBorrarProductoListaCompra"
         android:layout_width="15dp"
         android:layout_height="12dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline32"
         app:layout_constraintEnd_toStartOf="@+id/guideline28"
-        app:layout_constraintTop_toTopOf="@+id/guideline31"
+        app:layout_constraintTop_toTopOf="@+id/guideline13"
         tools:srcCompat="@tools:sample/avatars[3]" />
+
+    <com.canplimplam.despensainteligente.customviews.MyValueSelector
+        android:id="@+id/idCantidadProductoEnListaCompra"
+        android:layout_width="75dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline32"
+        app:layout_constraintEnd_toStartOf="@+id/guideline30"
+        app:layout_constraintTop_toTopOf="@+id/guideline13" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline13"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="3dp" />
 
 </android.support.constraint.ConstraintLayout>

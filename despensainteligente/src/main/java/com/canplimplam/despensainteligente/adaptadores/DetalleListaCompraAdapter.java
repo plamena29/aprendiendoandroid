@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.canplimplam.despensainteligente.R;
+import com.canplimplam.despensainteligente.customviews.MyValueSelector;
 import com.canplimplam.despensainteligente.model.ListaCompra;
 import com.canplimplam.despensainteligente.model.Producto;
 
@@ -69,13 +70,13 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
         //Recoger todas las vistas de ese layout..
         final ImageView imageBorrarProducto = (ImageView) vista.findViewById(R.id.idImageBorrarProductoListaCompra);
         final TextView nombreProducto = (TextView) vista.findViewById(R.id.idNombreProductoEnListaCompra);
-        final EditText cantidadProducto = (EditText) vista.findViewById(R.id.idCantidadProductoEnListaCompra);
+        final MyValueSelector cantidadProducto = (MyValueSelector) vista.findViewById(R.id.idCantidadProductoEnListaCompra);
         final EditText caducidadProducto = (EditText) vista.findViewById(R.id.idCaducidadEnListaCompra);
 
         Producto producto = listaCompra.getProductos().get(position);
         imageBorrarProducto.setImageResource(R.drawable.botoneliminar);
         nombreProducto.setText(producto.getNombre());
-        cantidadProducto.setText(String.valueOf(producto.getCantidad()));
+        cantidadProducto.setValor(producto.getCantidad());
         caducidadProducto.setText(SDF_EUROPE.format(producto.getCaducidad()));
 
         imageBorrarProducto.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +88,7 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
             }
         });
 
+        /*
         cantidadProducto.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -105,6 +107,7 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
 
             }
         });
+        */
 
         caducidadProducto.setOnClickListener(new View.OnClickListener() {
             @Override
