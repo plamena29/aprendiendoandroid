@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.canplimplam.despensainteligente.R;
+import com.canplimplam.despensainteligente.customviews.MyValueSelector;
 import com.canplimplam.despensainteligente.model.Despensa;
 import com.canplimplam.despensainteligente.model.ListaCompra;
 import com.canplimplam.despensainteligente.model.Producto;
@@ -76,13 +77,13 @@ public class DetalleDespensaEditAdapter extends BaseAdapter {
         //Recoger todas las vistas de ese layout..
         final ImageView imageBorrarProducto = (ImageView) vista.findViewById(R.id.idImageBorrarProductoListaCompra);
         final TextView nombreProducto = (TextView) vista.findViewById(R.id.idNombreProductoEnListaCompra);
-        final EditText cantidadProducto = (EditText) vista.findViewById(R.id.idCantidadProductoEnListaCompra);
+        final MyValueSelector cantidadProducto = (MyValueSelector) vista.findViewById(R.id.idCantidadProductoEnListaCompra);
         final EditText caducidadProducto = (EditText) vista.findViewById(R.id.idCaducidadEnListaCompra);
 
         Producto producto = productosOrdenados.get(position);
         imageBorrarProducto.setImageResource(R.drawable.botoneliminar);
         nombreProducto.setText(producto.getNombre());
-        cantidadProducto.setText(String.valueOf(producto.getCantidad()));
+        cantidadProducto.setValor(producto.getCantidad());
         caducidadProducto.setText(SDF_EUROPE.format(producto.getCaducidad()));
 
         //Listener para eliminar producto - lo sacamos del Map, no actualizaremos SQLite hasta que no se clicke en Gurdar
@@ -93,6 +94,18 @@ public class DetalleDespensaEditAdapter extends BaseAdapter {
                 despensa.getProductos().remove(productosOrdenados.get(position).getNombre());
                 productosOrdenados.remove(position);
                 notifyDataSetChanged();
+            }
+        });
+
+        //Listener para actualizar las cantidades en el Map (en SQLite se hará al pulsar guardar)
+        cantidadProducto.setMyValueSelectorListener(new MyValueSelector.MyValueSelectorListener() {
+            @Override
+            public void onDataLoaded(MyValueSelector mvs) {
+                Log.d("**", "cantidad: " + mvs.getValor());
+                Producto producto = productosOrdenados.get(position);
+                producto.setCantidad(mvs.getValor());
+                despensa.getProductos().put(productosOrdenados.get(position).getNombre(), producto);
+                productosOrdenados.get(position).setCantidad(mvs.getValor());
             }
         });
 

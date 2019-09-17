@@ -22,6 +22,15 @@ public class MyValueSelector extends ConstraintLayout {
     private int valor;
     private ImageView botonMas;
 
+    //Listener para enviar y persistir las cantidades en los adaptadores
+    //Definición del listener (es una clase interna)
+    public interface MyValueSelectorListener{
+        public void onDataLoaded(MyValueSelector mvs);
+    }
+
+    //Variable de instancia que almacena la implementación del listener
+    private MyValueSelectorListener listener;
+
     public MyValueSelector(Context context, AttributeSet attrs) {
         super(context, attrs);
 
@@ -49,6 +58,9 @@ public class MyValueSelector extends ConstraintLayout {
                 valor++;
                 valorView.setText("" + valor);
                 valorView.setTextColor(Color.BLACK);
+                if(listener != null){
+                    listener.onDataLoaded(getMyValueSelector());
+                }
             }
         });
 
@@ -62,8 +74,21 @@ public class MyValueSelector extends ConstraintLayout {
                 if(valor == 0){
                     valorView.setTextColor(Color.RED);
                 }
+                if(listener != null){
+                    listener.onDataLoaded(getMyValueSelector());
+                }
             }
         });
+    }
+
+    //Setter que permite la inyección del listener
+    public void setMyValueSelectorListener(MyValueSelectorListener listener){
+        this.listener = listener;
+    }
+
+    //Getter para devolverse a sí mismo
+    public MyValueSelector getMyValueSelector(){
+        return this;
     }
 
     public void setValor(int valor){
@@ -74,5 +99,9 @@ public class MyValueSelector extends ConstraintLayout {
         }else{
             valorView.setTextColor(Color.BLACK);
         }
+    }
+
+    public int getValor() {
+        return valor;
     }
 }

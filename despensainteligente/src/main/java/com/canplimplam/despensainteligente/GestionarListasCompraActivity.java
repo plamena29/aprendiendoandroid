@@ -118,4 +118,10 @@ public class GestionarListasCompraActivity extends AppCompatActivity {
         ListasCompraMasterAdapter adaptador = new ListasCompraMasterAdapter(GestionarListasCompraActivity.this, listasCompraMaster);
         resultadoListasCompra.setAdapter(adaptador);
     }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        refreshLista();
+    }
 }

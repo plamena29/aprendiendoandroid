@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.canplimplam.despensainteligente.R;
 import com.canplimplam.despensainteligente.model.ListaCompra;
-import com.canplimplam.despensainteligente.model.Producto;
 
 import java.util.List;
 
@@ -31,11 +30,11 @@ public class ListasCompraMasterAdapter extends BaseAdapter {
 
         //Recoger todas las vistas de ese layout..
 
-        TextView codigoListaCompra = (TextView) vista.findViewById(R.id.idCodigoListaCompraRowMaster);
+        TextView volumenListaCompra = (TextView) vista.findViewById(R.id.idVolumenListaCompraRowMaster);
         TextView nombreListaCompra = (TextView) vista.findViewById(R.id.idNombreListaCompraRowMaster);
 
         ListaCompra listaCompra = listasCompraMaestro.get(position);
-        codigoListaCompra.setText(String.valueOf(listaCompra.getCodigo()));
+        volumenListaCompra.setText(String.valueOf(listaCompra.getVolumen()));
         nombreListaCompra.setText(listaCompra.getNombre());
 
         return vista;

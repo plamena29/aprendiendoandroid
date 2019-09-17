@@ -406,7 +406,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 int codigo = cursor.getInt(0);
                 String nombre = cursor.getString(1);
 
+                Cursor cursor2 = db.rawQuery("SELECT ID FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE " + COL_5 + " = " + codigo, null);
+                Log.d("**", "" + cursor2.getCount());
                 ListaCompra listaCompra = new ListaCompra(codigo, nombre);
+                listaCompra.setVolumen(cursor2.getCount());
                 maestroListas.put(nombre, listaCompra);
             }
         }

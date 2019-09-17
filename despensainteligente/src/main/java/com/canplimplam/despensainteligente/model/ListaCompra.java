@@ -6,6 +6,7 @@ public class ListaCompra {
     private int codigo;
     private String nombre;
     private List<Producto> productos;
+    private int volumen; //Cantidad de productos en lista compra
 
     public ListaCompra(){
 
@@ -44,5 +45,13 @@ public class ListaCompra {
 
     public void setProductos(List<Producto> productos) {
         this.productos = productos;
+    }
+
+    public int getVolumen() {
+        return volumen;
+    }
+
+    public void setVolumen(int volumen) {
+        this.volumen = volumen;
     }
 }

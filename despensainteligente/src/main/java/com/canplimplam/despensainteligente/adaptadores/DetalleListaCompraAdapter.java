@@ -3,8 +3,6 @@ package com.canplimplam.despensainteligente.adaptadores;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.support.v4.app.FragmentActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.canplimplam.despensainteligente.R;
 import com.canplimplam.despensainteligente.customviews.MyValueSelector;
@@ -36,7 +33,6 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
     private ListaCompra listaCompra;
     private Context contexto;
     private static final SimpleDateFormat SDF_EUROPE = new SimpleDateFormat("dd/MM/yyyy");
-    private int currentlyFocusedRow = -1;
 
     public DetalleListaCompraAdapter (Context contexto, ListaCompra listaCompra) {
         this.contexto = contexto;
@@ -79,6 +75,7 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
         cantidadProducto.setValor(producto.getCantidad());
         caducidadProducto.setText(SDF_EUROPE.format(producto.getCaducidad()));
 
+        //LISTENERS
         imageBorrarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,26 +85,14 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
             }
         });
 
-        /*
-        cantidadProducto.addTextChangedListener(new TextWatcher() {
+        cantidadProducto.setMyValueSelectorListener(new MyValueSelector.MyValueSelectorListener() {
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!cantidadProducto.getText().toString().equals("")){
-                    listaCompra.getProductos().get(position).setCantidad(Integer.parseInt(cantidadProducto.getText().toString()));
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
+            public void onDataLoaded(MyValueSelector mvs) {
+                Log.d("**", listaCompra.getProductos().get(position).getNombre());
+                int valor = mvs.getValor();
+                listaCompra.getProductos().get(position).setCantidad(valor);
             }
         });
-        */
 
         caducidadProducto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,51 +104,6 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
                 }
             }
         });
-        /*
-        caducidadProducto.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void afterTextChanged(Editable s) {
-                boolean resultado = validarFecha(caducidadProducto.getText().toString());
-                if(resultado == true){
-                    Date fecha = new Date();
-                    try {
-                        fecha = SDF_EUROPE.parse(caducidadProducto.getText().toString());
-                    } catch (ParseException e) {
-                        //Toast
-                    }
-                    listaCompra.getProductos().get(position).setCaducidad(fecha);
-                }
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-        });
-
-*/
-
-        /*
-        cantidadProducto.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(currentlyFocusedRow == -1){
-                    currentlyFocusedRow = position;
-                }
-                if ((position != currentlyFocusedRow)){ // hemos cambiado
-                    Log.d("**", "producto: " + listaCompra.getProductos().get(currentlyFocusedRow).getNombre());
-                    currentlyFocusedRow = position;
-                }
-            }
-        });
-
-        */
 
         return vista;
     }

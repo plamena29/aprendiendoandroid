@@ -35,7 +35,7 @@
 
     <ListView
         android:id="@+id/idListaDespensa"
-        android:layout_width="390dp"
+        android:layout_width="403dp"
         android:layout_height="479dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
@@ -44,8 +44,10 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/guideline35"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.375"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline7" />
+        app:layout_constraintTop_toTopOf="@+id/guideline7"
+        app:layout_constraintVertical_bias="1.0" />
 
     <android.support.constraint.Guideline
         android:id="@+id/guideline34"
