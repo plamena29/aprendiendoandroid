@@ -1,0 +1,47 @@
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <TextView
+        android:id="@+id/idLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="10dip"
+        android:layout_marginTop="20dip"
+        android:layout_marginRight="9dip"
+        android:text="Tiempo a dormir en segundos"
+        android:textColor="#444444"
+        android:textSize="10pt" />
+
+    <EditText
+        android:id="@+id/idTiempo"
+        android:layout_width="150dip"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:layout_toRightOf="@id/idLabel"
+        android:layout_alignTop="@id/idLabel"
+        android:inputType="number"
+        />
+
+    <Button
+        android:id="@+id/idBotonIniciar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idTiempo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="64dp"
+        android:text="Ejecutar AsyncTask" />
+
+    <TextView
+        android:id="@+id/idResultadoFinal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="7pt"
+        android:layout_below="@+id/idBotonIniciar"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>
