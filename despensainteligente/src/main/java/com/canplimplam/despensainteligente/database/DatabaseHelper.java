@@ -49,7 +49,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final SimpleDateFormat SDF_AMERICA = new SimpleDateFormat("yyyy/MM/dd");
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 3);
+        super(context, DATABASE_NAME, null, 1);
     }
 
     @Override
@@ -64,16 +64,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String strDDL = sb.toString();
         db.execSQL(strDDL);
+        mejoraFase1(db);
+        mejoraFase2(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        //De momento no aplica
+        /*
         if(oldVersion == 1 && newVersion == 2){
             upgradeVersionDe1a2(db);
         }
         if(oldVersion == 2 && newVersion == 3){
             upgradeVersionDe2a3(db);
         }
+        */
     }
 
     //GESTOR PARA LA DESPENSA
@@ -496,7 +501,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //Métodos privados de upgrade
-    private void upgradeVersionDe1a2(SQLiteDatabase db){
+    private void mejoraFase1(SQLiteDatabase db){
         //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
@@ -508,7 +513,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(strDDL);
     }
 
-    private void upgradeVersionDe2a3(SQLiteDatabase db){
+    private void mejoraFase2(SQLiteDatabase db){
         //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
