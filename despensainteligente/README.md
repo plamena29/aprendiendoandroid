@@ -11,13 +11,13 @@ Las principales funcionalidades que soporta son:
 #### Objetivos alcanzados:
   - Se dispone de una primera versión operativa que cubre los requisitos básicos garantizando la consistencia de los datos
   - Se han creado con éxito las principales actividades y layouts que incluyen:
-  -- adaptadores para las listas custom
-  -- listeners para filtrado y actualización de datos en memoria
-  -- listeners que permiten la persistencia de los cambios en SQLite
-  -- implementación y reuso de una custom view con su funcionalidad encapsulada
-  -- implemetación y reuso de un DatePicker en diferentes contextos
-  - Se ha ido refactorizando el código a medida que avanzaba el proyecto
-  - Definición e implemetación de interfaces relacionados con Servicios que permiten gestionar los datos maestros 
+    - adaptadores para las listas custom
+    - listeners para filtrado y actualización de datos en memoria
+    - listeners que permiten la persistencia de los cambios en SQLite
+    - implementación y reuso de una custom view con su funcionalidad encapsulada
+    - implemetación y reuso de un DatePicker en diferentes contextos
+    - Se ha ido refactorizando el código a medida que avanzaba el proyecto
+    - Definición e implemetación de interfaces relacionados con Servicios que permiten gestionar los datos maestros
 
 #### Objetivos no alcanzados:
   - Refactorizar el código para incluir menú de fácil acceso a las principales actividades desde la barra
