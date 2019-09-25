@@ -25,7 +25,7 @@ Las principales funcionalidades que soporta son:
   - Incluir más funcionalidades en el gestor de despensa (por ejemplo, filtro de productos con cantidad 0, productos caducados, ordenar productos por cantidad..)
   - Versión futura: soportar cuentas y multi-usuario que pueden gestionar una misma despensa y listas de compra compartidas
   
-# Screenshots y activities y clases más represenrtativas
+# Screenshots y activities y clases más representativas
 #### Pantalla principal
   - Dispone de una imagen de ambiente y 3 botones que dan acceso a 3 de las actividades principales:
     - Alta de producto en despensa
@@ -72,6 +72,7 @@ Las principales funcionalidades que soporta son:
 [![Gestión de master de listas de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/masterdelistasdecompra.PNG)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/masterdelistasdecompra.PNG)
 
 #### Edición del detalle de una lista de compra:
+  - Arriba de todo se muestra el nombre de la lista de compra a editar
   - La actividad se carga listando en la zona azul los artículos existentes en la lista de compra. En esta zona se usa el mismo layout que en la gestión de la despensa, permitiendo eliminar productos con el aspa roja, modificar la cantidad con la custom view, y editar la fecha de caducidad con el DatePicker. Lo que cambia es el adaptador, que ahora contiene la lista de la compra.
   - Arriba de todo se dispone de un buscador. A medida que el usuario teclea una cadena de caracteres en el campo editable, justo a continuación (por debajo) se listan los productos existentes en la despensa que cumplen con el criterio de búsqueda. Se visualizan el nombre del producto, la cantidad existente en la despensa y la última fecha de caducidad informada en la despensa (no siendo editables). El usuario puede hacer click sobre un producto del resultado de la búsqueda y el texto editable del buscador queda automáticamente rellenado con el nombre exacto y completo de este producto. (La finalidad de esta funcionalidad es aprovechar los nombres de productos usados que son clave y garantizar la consistencia cuando se actualiza la despensa desde la lista de compra). A continuación el usuario pulsaría el boton "+" con la finalidad de añadir el producto a la lista de compra. Por defecto la cantidad en la lista de compra será 1 y la fecha de caducidad 31/12/9999. El usuario ajustaría la cantidad si se precisa.
   - También se puede añadir a la lista de compra un producto no existente en la despensa. Introduciría el nombre de producto deseado y clickaría en el botón "+" nuevamente. Este producto aparecerá en la lista de compra con cantidad 1 y fecha de caducidad 31/12/9999.
@@ -84,3 +85,8 @@ Las principales funcionalidades que soporta son:
     - Para un correcto uso, la despensa debe ser revisada y actualizada periódicamente ajustando las cantidades (puede ser tras gastar un producto o hacer limpieza dependiendo del tiempo disponible del usuario). En caso contrario, las cantidades disponibles irían creciendo.
 
 [![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/detallelistadecompra.PNG)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/detallelistadecompra.PNG)
+
+# Otros
+ - La applicación está basada en SQlite.
+ - Existen 2 Servicios (interfaces implementadas) para gestionar la despensa y las listas de compra
+ - Se ha definido el DatabaseHelper para interactuar con la base de datos en el momento de crearla o hacer un upgrade, y cuando se hace uso de los servicios.
