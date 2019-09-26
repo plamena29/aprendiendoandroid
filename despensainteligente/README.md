@@ -84,9 +84,42 @@ Las principales funcionalidades que soporta son:
     - Tras actualizar la despensa, se anulan las cantidades de los productos en la lista de compra. Así se evita añadir las cantidades a la despensa por duplicado y el usuario puede reaprovechar el detalle de los artículos para su próxima compra ajustando las cantidades nuevamente.
     - Para un correcto uso, la despensa debe ser revisada y actualizada periódicamente ajustando las cantidades (puede ser tras gastar un producto o hacer limpieza dependiendo del tiempo disponible del usuario). En caso contrario, las cantidades disponibles irían creciendo.
 
-[![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-POJOs.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-POJOs.gif)
+[![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/detallelistadecompra.PNG)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/detallelistadecompra.PNG)
+
+# UMLs
+#### POJOs
+ - Se han definido 3 clases POJO representando:
+    - Producto
+    - Lista de Compra
+    - Despensa
+
+  [![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-POJOs.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-POJOs.gif)
+
+#### Adaptadores
+  - Adaptadores para Despensa (lista no editable de productos, y lista editable de productos)
+
+  [![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Adaptadores-Despensa.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Adaptadores-Despensa.gif)
+
+  - Adaptadores para Lista de Compra (para maestro, y para editar el detalle de productos)
+
+  [![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Adaptadores-ListaCompra.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Adaptadores-ListaCompra.gif)
+
+#### Custom Views
+  - MyValueSelector incrustado en los layouts que usan los adaptadores para editar el detalle de los productos en despensa y lista de compra.
+
+  [![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-CustomViews.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Adaptadores-CustomViews.gif)
+
+#### Servicios y Actividades principales
+  - Despensa (Interface + Implementación) usado en 3 actividades principales.
+
+  [![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Services-Despensa.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Adaptadores-Services-Despensa.gif)
+
+ - Lista Compra (Interface + Implementación) usado en 3 actividades principales.
+
+  [![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Services-ListaCompra.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-Adaptadores-Services-ListaCompra.gif)
 
 # Otros
  - La applicación está basada en SQlite.
- - Existen 2 Servicios (interfaces implementadas) para gestionar la despensa y las listas de compra
  - Se ha definido el DatabaseHelper para interactuar con la base de datos en el momento de crearla o hacer un upgrade, y cuando se hace uso de los servicios.
+
+
