@@ -84,7 +84,7 @@ Las principales funcionalidades que soporta son:
     - Tras actualizar la despensa, se anulan las cantidades de los productos en la lista de compra. Así se evita añadir las cantidades a la despensa por duplicado y el usuario puede reaprovechar el detalle de los artículos para su próxima compra ajustando las cantidades nuevamente.
     - Para un correcto uso, la despensa debe ser revisada y actualizada periódicamente ajustando las cantidades (puede ser tras gastar un producto o hacer limpieza dependiendo del tiempo disponible del usuario). En caso contrario, las cantidades disponibles irían creciendo.
 
-[![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/detallelistadecompra.PNG)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/detallelistadecompra.PNG)
+[![Editar detalle de lista de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-POJOs.gif)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/UML-POJOs.gif)
 
 # Otros
  - La applicación está basada en SQlite.
