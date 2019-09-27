@@ -6,12 +6,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.canplimplam.despensainteligente.model.ListaCompra;
-import com.canplimplam.despensainteligente.services.DespensaServices;
-import com.canplimplam.despensainteligente.services.DespensaServicesSQLite;
 import com.canplimplam.despensainteligente.services.ListaCompraServices;
 import com.canplimplam.despensainteligente.services.ListaCompraServicesSQLite;
 

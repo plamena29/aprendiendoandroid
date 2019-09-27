@@ -3,24 +3,17 @@ package com.canplimplam.despensainteligente;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TextView;
 
-import com.canplimplam.despensainteligente.adaptadores.DespensaListAdapter;
 import com.canplimplam.despensainteligente.adaptadores.ListasCompraMasterAdapter;
 import com.canplimplam.despensainteligente.model.ListaCompra;
-import com.canplimplam.despensainteligente.model.Producto;
-import com.canplimplam.despensainteligente.services.DespensaServices;
-import com.canplimplam.despensainteligente.services.DespensaServicesSQLite;
 import com.canplimplam.despensainteligente.services.ListaCompraServices;
 import com.canplimplam.despensainteligente.services.ListaCompraServicesSQLite;
 
-import java.text.ParseException;
 import java.util.List;
 
 public class GestionarListasCompraActivity extends AppCompatActivity {

@@ -21,31 +21,23 @@ import java.util.TreeMap;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
+    //Base de datos
     public static final String DATABASE_NAME = "despensainteligente.db";
+
+    //Tablas
     public static final String DESPENSA_TABLE = "DESPENSA";
     public static final String LISTA_COMPRA_MASTER_TABLE = "LISTA_COMPRA_MASTER";
     public static final String LISTA_COMPRA_DETALLE_TABLE = "LISTA_COMPRA_DETALLE";
-    //Columnas productos
+
+    //Columnas
     public static final String COL_1 = "ID";
     public static final String COL_2 = "NOMBRE";
     public static final String COL_3 = "CANTIDAD";
     public static final String COL_4 = "CADUCIDAD";
     public static final String COL_5 = "ID_LISTA";
 
-    /*
-    public static final String COL_5 = "SISTOLICA";
-    public static final String COL_6 = "LONGITUD";
-    public static final String COL_7 = "LATITUD";
-    public static final String COL_8 = "NOMBRE";
-    public static final String COL_9 = "APELLIDO";
-    public static final String COL_10 = "EDAD";
-    public static final String COL_11 = "SEXO";
-
-    */
-
     public final SQLiteDatabase db = this.getWritableDatabase();
 
-    private static final SimpleDateFormat SDF_EUROPE = new SimpleDateFormat("dd/MM/yyyy");
     private static final SimpleDateFormat SDF_AMERICA = new SimpleDateFormat("yyyy/MM/dd");
 
     public DatabaseHelper(Context context) {
@@ -54,6 +46,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //Crea la tabla de la despensa
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
                 .append(DESPENSA_TABLE).append(" (")
@@ -64,29 +57,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String strDDL = sb.toString();
         db.execSQL(strDDL);
-        mejoraFase1(db);
-        mejoraFase2(db);
+        mejoraFase1(db);    //Crea la tabla de maestro de listas de compra
+        mejoraFase2(db);    //Crea la tabla con el detalle de artículos por lista de compra
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        //De momento no aplica
-        /*
-        if(oldVersion == 1 && newVersion == 2){
-            upgradeVersionDe1a2(db);
-        }
-        if(oldVersion == 2 && newVersion == 3){
-            upgradeVersionDe2a3(db);
-        }
-        */
+
     }
 
     //GESTOR PARA LA DESPENSA
 
     public Producto crearProductoDespensa(Producto producto){
-        //Necesito una referencia a la base de datos "como tal"..
-        //SQLiteDatabase db = this.getWritableDatabase();
-
         //Tratamiento de fecha
         String strCaducidad = SDF_AMERICA.format(producto.getCaducidad());
 
@@ -100,7 +82,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         long resultado = db.insert(DESPENSA_TABLE, null, contentValues);
         //si resultado = -1 algo ha ido mal
         //si resultado >= 0 nos indica el número de registros afectados
-        //String nombreBaseDatos = this.getDatabaseName();
 
             producto.setCodigo((int) resultado);
 
@@ -108,7 +89,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Producto readProductoDespensa(int idProducto){
-        //SQLiteDatabase db = this.getWritableDatabase();
 
         Date fecha = new Date();
 
@@ -151,16 +131,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         int nombreExistente = validarProductoPorNombre(producto.getNombre());
 
         //El producto no existe y hay que crearlo:
-        //1 - se crea nuevo en despensa
+        //1 - se crea nuevo en despensa desde el Formulario
         //2 - viene desde ListaCompra y el nombre no se ha usado
         if((codigo == -1) && (nombreExistente == -1)){
             Producto productoCreado = crearProductoDespensa(producto);
-            Log.d("**", "productoCreado: " + productoCreado.toString());
             return productoCreado;
         }
-        //Se conoce el código del producto, es una actualizacion desde despensa
-        //O desde lista de compra cuando el producto ya existe
-        //También hay que actualizar el nombre siempre y cuando esté disponible
+        //Se conoce el código del producto
+        // 1- es una actualizacion desde despensa (esta opcion ha quedado obsoleta)
+        // 2- desde lista de compra cuando el producto ya existe
         else if((codigo != -1) && (((nombreExistente == -1)) || (nombreExistente == codigo))){
             //Montamos contentValues
             ContentValues contentValues = new ContentValues();
@@ -189,6 +168,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return resultado <= 0 ? false: true;
     }
 
+    //Devuelve el id de producto buscando por el nombre.
+    //Si no existe, devuelve -1
     public int validarProductoPorNombre(String nombreProducto){
         int resultado = -1;
 
@@ -242,11 +223,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public List<Producto> getByTextDespensa(String texto){
-      //  Cursor cursor = db.rawQuery("SELECT * FROM " + DESPENSA_TABLE + " WHERE " + COL_2 + " LIKE ", null);
 
         String[] campos = new String[]{COL_1, COL_2, COL_3, COL_4};
 
-       // Cursor cursor = db.query(DESPENSA_TABLE, campos, "WHERE " + COL_2 + " LIKE %" + texto + "%", null,null, null, null);
         Cursor cursor = db.query(DESPENSA_TABLE, campos, COL_2 + " LIKE ?", new String[]{"%" + texto + "%"},null, null, null);
 
         List<Producto> productos = new ArrayList<Producto>();
@@ -281,10 +260,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public boolean actualizarDespensaDesdeListaCompra(List<Producto> productos){
         boolean resultado = true;
-        //TODO pulir el resultado
         for(Producto producto: productos){
             if(producto.getCodigo() == -1){
-                crearProductoDespensa(producto);
+                Producto productoCreado = crearProductoDespensa(producto);
+                if (productoCreado == null){
+                    resultado = false;
+                }
             }
             else{
                 int cantidad = readProductoDespensa(producto.getCodigo()).getCantidad();
@@ -384,7 +365,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 contentValues.put(COL_2, listaCompra.getNombre());
             }
 
-            long resultado = db.update(LISTA_COMPRA_MASTER_TABLE, contentValues, COL_1 + " = " + listaCompra.getCodigo(), null);
+            db.update(LISTA_COMPRA_MASTER_TABLE, contentValues, COL_1 + " = " + listaCompra.getCodigo(), null);
 
             ListaCompra listaCompraActualizada = readListaCompra(listaCompra.getCodigo());
             return listaCompraActualizada;
@@ -412,7 +393,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String nombre = cursor.getString(1);
 
                 Cursor cursor2 = db.rawQuery("SELECT ID FROM " + LISTA_COMPRA_DETALLE_TABLE + " WHERE " + COL_5 + " = " + codigo, null);
-                Log.d("**", "" + cursor2.getCount());
+
                 ListaCompra listaCompra = new ListaCompra(codigo, nombre);
                 listaCompra.setVolumen(cursor2.getCount());
                 maestroListas.put(nombre, listaCompra);
@@ -499,10 +480,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return productos;
     }
 
-
     //Métodos privados de upgrade
     private void mejoraFase1(SQLiteDatabase db){
-        //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
                 .append(LISTA_COMPRA_MASTER_TABLE).append(" (")
@@ -514,7 +493,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private void mejoraFase2(SQLiteDatabase db){
-        //db.execSQL("DROP TABLE IF EXISTS " + LISTA_COMPRA_MASTER_TABLE);
         StringBuilder sb = new StringBuilder();
         sb.append("CREATE TABLE ")
                 .append(LISTA_COMPRA_DETALLE_TABLE).append(" (")

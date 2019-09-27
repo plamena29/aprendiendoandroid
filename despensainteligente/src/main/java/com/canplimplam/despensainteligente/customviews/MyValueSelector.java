@@ -56,7 +56,7 @@ public class MyValueSelector extends ConstraintLayout {
             @Override
             public void onClick(View v) {
                 valor++;
-                valorView.setText("" + valor);
+                valorView.setText(String.valueOf(valor));
                 valorView.setTextColor(Color.BLACK);
                 if(listener != null){
                     listener.onDataLoaded(getMyValueSelector());
@@ -69,7 +69,7 @@ public class MyValueSelector extends ConstraintLayout {
             public void onClick(View v) {
                 if(valor>0){
                     valor --;
-                    valorView.setText("" + valor);
+                    valorView.setText(String.valueOf(valor));
                 }
                 if(valor == 0){
                     valorView.setTextColor(Color.RED);
@@ -93,7 +93,7 @@ public class MyValueSelector extends ConstraintLayout {
 
     public void setValor(int valor){
         this.valor = valor;
-        valorView.setText("" + valor);
+        valorView.setText(String.valueOf(valor));
         if(valor == 0){
             valorView.setTextColor(Color.RED);
         }else{

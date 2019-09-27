@@ -1,6 +1,5 @@
 package com.canplimplam.despensainteligente;
 
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,7 +10,6 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.canplimplam.despensainteligente.adaptadores.DespensaListAdapter;
@@ -27,9 +25,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
 
 public class EditarListaCompraActivity extends AppCompatActivity {
     //Campos refinados
@@ -140,12 +135,11 @@ public class EditarListaCompraActivity extends AppCompatActivity {
         botonActualizarDespensa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Recogemos los códigos de los productos existentes desde la despensa parahacer el matching correcto
+                //Recogemos los códigos de los productos existentes desde la despensa para hacer el matching correcto
                 List<Producto> productosConCodigoActualizado = adaptador.getProductos();
                 for(Producto producto: productosConCodigoActualizado){
                     int codigoExistente = despensaServices.validarProductoPorNombre(producto.getNombre());
                     producto.setCodigo(codigoExistente);
-                    Log.d("**", "código: " + producto.getCodigo() + " - producto: " + producto.getNombre());
                 }
 
                 //Actualizamos la lista de compra en memoria y en base de datos
@@ -153,11 +147,13 @@ public class EditarListaCompraActivity extends AppCompatActivity {
                 listaCompraServices.updateProductosListaCompra(listaCompra);
 
                 //Actualizamos la despensa desde la lista de compra ajustando las cantidades
-                despensaServices.actualizarDespensaDesdeListaCompra(listaCompra.getProductos());
+                boolean resultadoActualizarDespensa = despensaServices.actualizarDespensaDesdeListaCompra(listaCompra.getProductos());
 
                 //Seteamos a cero las cantidades en la lista de compra
-                for(Producto producto: adaptador.getProductos()){
-                    producto.setCantidad(0);
+                if(resultadoActualizarDespensa == true) {
+                    for (Producto producto : adaptador.getProductos()) {
+                        producto.setCantidad(0);
+                    }
                 }
                 listaCompra.setProductos(adaptador.getProductos());
                 listaCompraServices.updateProductosListaCompra(listaCompra);
@@ -181,5 +177,4 @@ public class EditarListaCompraActivity extends AppCompatActivity {
         adaptador = new DetalleListaCompraAdapter(EditarListaCompraActivity.this, listaCompra);
         listaProductosEnListaCompra.setAdapter(adaptador);
     }
-
 }

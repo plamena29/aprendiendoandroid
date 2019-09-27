@@ -89,7 +89,6 @@ public class FormularioProductoDespensaActivity extends AppCompatActivity {
                         caducidad = SDF_EUROPE.parse(strCaducidad);
                     } catch (ParseException e) {
                         e.printStackTrace();
-                        Log.d("**", "error fecha");
                     }
                 }
 
