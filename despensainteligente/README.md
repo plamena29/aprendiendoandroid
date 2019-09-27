@@ -34,7 +34,7 @@ Las principales funcionalidades que soporta son:
   - Layouts usados:
     - activity_main.xml
 
-[![Pantalla Principal](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/pantallaprincipal.PNG)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/pantallaprincipal.PNG)
+[![Pantalla Principal](https://raw.githubusercontent.com/plamena29/aprendiendoandroid/master/despensainteligente/doc/pantallaprincipal.PNG)](https://raw.githubusercontent.com/plamena29/aprendiendoandroid/master/despensainteligente/doc/pantallaprincipal.PNG)
 
 #### Alta de producto en despensa (FormularioProductoDespensaActivity)
   - Consiste en un formulario donde el usuario introduce:
