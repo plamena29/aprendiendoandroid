@@ -16,10 +16,8 @@ public class ListasCompraMasterAdapter extends BaseAdapter {
 
     private LayoutInflater inflater = null;
     private List<ListaCompra> listasCompraMaestro;
-    private Context contexto;
 
     public ListasCompraMasterAdapter (Context contexto, List<ListaCompra> listasCompraMaestro) {
-        this.contexto = contexto;
         inflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
         this.listasCompraMaestro = listasCompraMaestro;
     }
@@ -29,7 +27,6 @@ public class ListasCompraMasterAdapter extends BaseAdapter {
         final View vista = inflater.inflate(R.layout.row_model_lista_compra_master, null);
 
         //Recoger todas las vistas de ese layout..
-
         TextView volumenListaCompra = (TextView) vista.findViewById(R.id.idVolumenListaCompraRowMaster);
         TextView nombreListaCompra = (TextView) vista.findViewById(R.id.idNombreListaCompraRowMaster);
 

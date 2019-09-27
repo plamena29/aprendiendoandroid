@@ -79,7 +79,6 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
         imageBorrarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("**", "borrar: " + listaCompra.getProductos().get(position).getNombre());
                 listaCompra.getProductos().remove(position);
                 notifyDataSetChanged();
             }
@@ -88,7 +87,6 @@ public class DetalleListaCompraAdapter extends BaseAdapter {
         cantidadProducto.setMyValueSelectorListener(new MyValueSelector.MyValueSelectorListener() {
             @Override
             public void onDataLoaded(MyValueSelector mvs) {
-                Log.d("**", listaCompra.getProductos().get(position).getNombre());
                 int valor = mvs.getValor();
                 listaCompra.getProductos().get(position).setCantidad(valor);
             }

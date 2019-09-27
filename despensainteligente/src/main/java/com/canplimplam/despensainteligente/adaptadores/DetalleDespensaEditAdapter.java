@@ -16,7 +16,6 @@ import android.widget.TextView;
 import com.canplimplam.despensainteligente.R;
 import com.canplimplam.despensainteligente.customviews.MyValueSelector;
 import com.canplimplam.despensainteligente.model.Despensa;
-import com.canplimplam.despensainteligente.model.ListaCompra;
 import com.canplimplam.despensainteligente.model.Producto;
 
 import java.text.ParseException;
@@ -24,9 +23,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class DetalleDespensaEditAdapter extends BaseAdapter {
 
@@ -90,7 +87,6 @@ public class DetalleDespensaEditAdapter extends BaseAdapter {
         imageBorrarProducto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("**", "borrar: " + productosOrdenados.get(position).getNombre());
                 despensa.getProductos().remove(productosOrdenados.get(position).getNombre());
                 productosOrdenados.remove(position);
                 notifyDataSetChanged();
@@ -101,7 +97,6 @@ public class DetalleDespensaEditAdapter extends BaseAdapter {
         cantidadProducto.setMyValueSelectorListener(new MyValueSelector.MyValueSelectorListener() {
             @Override
             public void onDataLoaded(MyValueSelector mvs) {
-                Log.d("**", "cantidad: " + mvs.getValor());
                 Producto producto = productosOrdenados.get(position);
                 producto.setCantidad(mvs.getValor());
                 despensa.getProductos().put(productosOrdenados.get(position).getNombre(), producto);
@@ -167,7 +162,7 @@ public class DetalleDespensaEditAdapter extends BaseAdapter {
                 try {
                     fecha = SDF_EUROPE.parse(selectedDate);
                 } catch (ParseException e) {
-                    //Toast
+                    //Se puede hacer un Toast
                 }
                 productosOrdenados.get(position).setCaducidad(fecha);
                 despensa.getProductos().put(productosOrdenados.get(position).getNombre(), productosOrdenados.get(position));
