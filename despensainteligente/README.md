@@ -83,6 +83,7 @@ Las principales funcionalidades que soporta son:
     - activity_editar_lista_compra_maestro.xml para la actividad que permite modificar el nombre de la lista de compra
 
 [![Gestión de master de listas de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/masterdelistasdecompra.PNG)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/masterdelistasdecompra.PNG)
+[![Gestión de master de listas de compra](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/editaratributoslistacompra.PNG)](https://github.com/plamena29/aprendiendoandroid/blob/master/despensainteligente/doc/editaratributoslistacompra.PNG)
 
 #### Edición del detalle de una lista de compra (EditarListaCompraActivity)
   - Arriba de todo se muestra el nombre de la lista de compra a editar
